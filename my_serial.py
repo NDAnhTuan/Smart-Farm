@@ -14,11 +14,14 @@ class UART:
 
     def __init__(self) -> None:
         #self.ser =serial.Serial(port=self.getPort(), baudrate=115200)
+        try:
+            self.ser = serial.Serial(port=COM7, baudrate=115200)
+            print(self.ser)
+            if self.ser == NONE:
+                self.port_error = True
+        except:
+            print("Error in serial")
         
-        self.ser = serial.Serial(port=COM_WSL, baudrate=9600)
-        print(self.ser)
-        if self.ser == NONE:
-            self.port_error = True
 
     def getPort(self):
         ports = serial.tools.list_ports.comports()
@@ -55,14 +58,14 @@ class UART:
         #     # client.publish("bbc-temp", splitData[2])
         #     print(splitData[2])
 
-    def ReadSerial(self, my_server):
+    def ReadSerial(self):
         bytesToRead = self.ser.inWaiting()
         if (bytesToRead > 0):
             self.mess = self.mess + self.ser.read(bytesToRead).decode("UTF-8")
+            print(self.mess)
             while ("#" in self.mess) and ("!" in self.mess):
                 start = self.mess.find("!")
                 end = self.mess.find("#")
-                self.ProcessData(self.mess[start:end + 1], my_server)
                 if (end == len(self.mess)):
                     self.mess = ""
                 else:
@@ -70,7 +73,7 @@ class UART:
 
 
 # for testing
-# temp = UART()
+temp = UART()
 # while True:
 #     temp.ReadSerial()
-#     time.sleep(1)
+    #time.sleep(0.01)

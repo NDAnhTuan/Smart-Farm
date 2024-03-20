@@ -6,16 +6,17 @@ import sys
 
 class AdafruitConnection:
     # Some config paras
-    AIO_FEED_NAMES = ['iot-pump', 'iot-led', 'iot-brightness',
-                      'iot-humidity', 'iot-temperature', 'iot-ai']
-    AIO_USERNAME = 'kido2k3'
-    AIO_KEY = 'aio_xaXF90SoDr4xIkhtgtaAoe55O9Z1'
+    AIO_FEED_NAMES = ['aiot-brightness', 'aiot-humidity', 'aiot-soil-moisture', 'aiot-temperature']
+    AIO_USERNAME = 'lamphat'
+    AIO_KEY = 'aio_eKmY20L6v0BKienHQVJeCwEyzDSy'
+    AIO_HOST = 'io.adafruit.com'
     client = None
 
     # The callback for when the client receives a CONN_ACK response from the server.
     def connected(self, client, user_data, flags, rc):
         # Connected function will be called when the client is connected to Adafruit IO.
-        print('Connected to Adafruit IO!')
+        if(rc == 0):
+            print('Successfully connecting to the server')
         for topic in self.AIO_FEED_NAMES:
             client.subscribe(f'{self.AIO_USERNAME}/feeds/{topic}')
 
@@ -38,7 +39,9 @@ class AdafruitConnection:
         # Disconnected function will be called when the client disconnects.
         print('Disconnected from Adafruit IO!')
         sys.exit(1)
-
+    def publish_data(self):
+        
+        return
     def __init__(self):
         self.client = mqtt.Client()
         # Enable TLS and use port 8883
@@ -49,14 +52,11 @@ class AdafruitConnection:
         self.client.on_connect = self.connected
         self.client.on_message = self.message
         self.client.on_subscribe = self.subscribed
-
-        self.client.connect(host='io.adafruit.com', port=8883, keepalive=60)
+        self.client.connect(host=self.AIO_HOST, port=8883, keepalive=60)
 
         self.client.loop_start()
         # client loop forever is suitable for subscribe-only processes
 
-        # wait 2s for the connection to AFruit server before pub-sub tasks
-        time.sleep(2)
 
 # for testing
 # import random
