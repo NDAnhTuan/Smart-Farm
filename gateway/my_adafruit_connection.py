@@ -2,13 +2,13 @@
 import paho.mqtt.client as mqtt
 import time
 import sys
-
+from my_data import SensorData
 
 class AdafruitConnection:
     # Some config paras
     AIO_FEED_NAMES = ['aiot-brightness', 'aiot-humidity', 'aiot-soil-moisture', 'aiot-temperature']
     AIO_USERNAME = 'lamphat'
-    AIO_KEY = 'aio_eKmY20L6v0BKienHQVJeCwEyzDSy'
+    AIO_KEY = ''
     AIO_HOST = 'io.adafruit.com'
     client = None
 
@@ -17,6 +17,8 @@ class AdafruitConnection:
         # Connected function will be called when the client is connected to Adafruit IO.
         if(rc == 0):
             print('Successfully connecting to the server')
+        else:
+            print("connecting fail")
         for topic in self.AIO_FEED_NAMES:
             client.subscribe(f'{self.AIO_USERNAME}/feeds/{topic}')
 
@@ -39,8 +41,15 @@ class AdafruitConnection:
         # Disconnected function will be called when the client disconnects.
         print('Disconnected from Adafruit IO!')
         sys.exit(1)
-    def publish_data(self):
-        
+    def publish_data(self, my_data: SensorData):
+        self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[0]}'
+                            , my_data.mean_bright)
+        self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[1]}'
+                            , my_data.mean_humid)
+        self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[2]}'
+                            , my_data.mean_soil)
+        self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[3]}'
+                            , my_data.mean_temp)
         return
     def __init__(self):
         self.client = mqtt.Client()

@@ -7,19 +7,29 @@ COM7 = "COM7"
 NONE = "None"
 COM_WSL = "/dev/ttyS0"
 
+CMD = ["TEMP", "HUMID", "SOIL", "BRIGHT", "LED", "FAN", "PUMP"]
+VALID_VALUE ={
+    "LED": ['0', '1'],
+    "FAN": ['0', '1', '2', '3'],
+    "PUMP": ['0', '1']
+}
 class UART:
     ser = NONE
     mess = ""
     port_error = False
+    feed_list = list()
+    value_list = list()
 
     def __init__(self) -> None:
         #self.ser =serial.Serial(port=self.getPort(), baudrate=115200)
         try:
-            self.ser = serial.Serial(port=COM7, baudrate=115200)
+            self.ser = serial.Serial(port=COM5, baudrate=115200)
             print(self.ser)
             if self.ser == NONE:
                 self.port_error = True
         except:
+            self.ser = NONE
+            self.port_error = True
             print("Error in serial")
         
 
@@ -30,34 +40,30 @@ class UART:
         for i in range(0, N):
             port = ports[i]
             strPort = str(port)
-            if "USB Serial Device" in strPort:
+            #print(strPort)
+            if "USB-SERIAL CH340" in strPort:
                 splitPort = strPort.split(" ")
                 commPort = (splitPort[0])
         return commPort
 
-    def ProcessData(self, data, my_server):
+    def ProcessData(self, data):
         data = data.replace("!", "")
         data = data.replace("#", "")
         feed, value = data.split(":")
+        if feed in ["TEMP", "HUMID", "SOIL", "BRIGHT"]:
+            value = float(value)
         print([feed, value])
-        text = ''
-        address = ''
-        if feed == "temp":
-            text = f'Publishing {value} to {my_server.AIO_FEED_NAMES[4]}.'
-            address = f'{my_server.AIO_USERNAME}/feeds/{my_server.AIO_FEED_NAMES[4]}'
-        elif feed == "humid":
-            text = f'Publishing {value} to {my_server.AIO_FEED_NAMES[3]}.'
-            address = f'{my_server.AIO_USERNAME}/feeds/{my_server.AIO_FEED_NAMES[3]}'
-        elif feed == "bright":
-            text = f'Publishing {value} to {my_server.AIO_FEED_NAMES[2]}.'
-            address = f'{my_server.AIO_USERNAME}/feeds/{my_server.AIO_FEED_NAMES[2]}'
-        if text != '':
-            print(text)
-            my_server.client.publish(address, value)
-
-        #     # client.publish("bbc-temp", splitData[2])
-        #     print(splitData[2])
-
+        if feed not in CMD:
+            self.send_data(f"!{feed}:1#")
+        elif feed in ["HUMID", "SOIL", "BRIGHT"] and value < 0:
+            self.send_data(f"!{feed}:2#")
+        elif feed in ["LED", "FAN", "PUMP"] and value not in VALID_VALUE[feed]:
+            self.send_data(f"!{feed}:2#")
+        else:
+            self.send_data(f"!{feed}:0#")
+            self.feed_list.append(feed)
+            self.value_list.append(value)
+        
     def ReadSerial(self):
         bytesToRead = self.ser.inWaiting()
         if (bytesToRead > 0):
@@ -66,14 +72,19 @@ class UART:
             while ("#" in self.mess) and ("!" in self.mess):
                 start = self.mess.find("!")
                 end = self.mess.find("#")
+                self.ProcessData(self.mess[start:end+1])
                 if (end == len(self.mess)):
                     self.mess = ""
                 else:
                     self.mess = self.mess[end+1:]
+    
+    def send_data(self, mess):
+        self.check_connection = False
+        self.ser.write(mess.encode())
+        return
 
-
-# for testing
-temp = UART()
+# # for testing
+# temp = UART()
 # while True:
 #     temp.ReadSerial()
-    #time.sleep(0.01)
+#     time.sleep(0.01)

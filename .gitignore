@@ -1,0 +1,5 @@
+# ignore ALL .log files
+*.log
+
+# ignore the cache of python
+__pycache__
