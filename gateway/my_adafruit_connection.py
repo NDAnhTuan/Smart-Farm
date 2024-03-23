@@ -8,7 +8,7 @@ class AdafruitConnection:
     # Some config paras
     AIO_FEED_NAMES = ['aiot-brightness', 'aiot-humidity', 'aiot-soil-moisture', 'aiot-temperature']
     AIO_USERNAME = 'lamphat'
-    AIO_KEY = 'aio_DWob66vrWecPI6LKAjH1Bl89fusA'
+    AIO_KEY = ''
     AIO_HOST = 'io.adafruit.com'
     client = None
 
