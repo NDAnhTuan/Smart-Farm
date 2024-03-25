@@ -10,3 +10,7 @@ Change Adafruit key in [my_adafruit_connection](gateway/my_adafruit_connection.p
 ```bash
 AIO_KEY = ''
 ```
+## Run the project
+```bash
+python main.py
+```
