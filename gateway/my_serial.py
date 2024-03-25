@@ -7,11 +7,11 @@ COM7 = "COM7"
 NONE = "None"
 COM_WSL = "/dev/ttyS0"
 
-CMD = ["TEMP", "HUMID", "SOIL", "BRIGHT", "LED", "FAN", "PUMP"]
+CMD = ["TEMP", "HUMID", "SOIL", "BRIGHT", "LED", "FAN", "PUMP", "LED_APP", "FAN_APP", "PUMP_APP"]
 VALID_VALUE ={
-    "LED": ['0', '1'],
-    "FAN": ['0', '1', '2', '3'],
-    "PUMP": ['0', '1']
+    "LED": ['0 ', '1 '],
+    "FAN": ['0 ', '1 ', '2 ', '3 '],
+    "PUMP": ['0 ', '1 ']
 }
 class UART:
     ser = NONE
@@ -82,6 +82,9 @@ class UART:
         self.check_connection = False
         self.ser.write(mess.encode())
         return
+    def query(self, cmd:str):
+        mess = f"!{cmd}:3#".encode()
+        self.ser.write(mess)
 
 # # for testing
 # temp = UART()

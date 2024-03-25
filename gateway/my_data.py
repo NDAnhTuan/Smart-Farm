@@ -1,11 +1,15 @@
 import statistics
 from my_serial import CMD
-
+from my_fsm import received
 ST_GETTING = 0
 ST_CAL_AND_SENDING = 1
 
-class SensorData:
+class Data:
     def __init__(self) -> None:
+        # state of controlled devices
+        self.led = str()
+        self.pump = str()
+        self.fan = str()
         # data get from sensors
         self.temperature = list()
         self.humidity = list()
@@ -33,6 +37,7 @@ class SensorData:
             feed_list.pop(0)
             value_list.pop(0)
     def get_single_data(self, cmd, value):
+        global received
         if cmd == CMD[0]:
             self.temperature.append(value)
         elif cmd == CMD[1]:
@@ -41,7 +46,15 @@ class SensorData:
             self.soil_moisture.append(value)
         elif cmd == CMD[3]:
             self.brightness.append(value)            
-        pass
+        elif cmd == CMD[4]:
+            received["LED"] = True
+            self.led = value
+        elif cmd == CMD[5]:
+            received["FAN"] = True
+            self.fan = value
+        elif cmd == CMD[6]:
+            received["PUMP"] = True
+            self.pump = value
     
     def calculate(self):
         try:
