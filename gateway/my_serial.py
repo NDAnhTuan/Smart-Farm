@@ -7,7 +7,7 @@ COM7 = "COM7"
 NONE = "None"
 COM_WSL = "/dev/ttyS0"
 
-CMD = ["TEMP", "HUMID", "SOIL", "BRIGHT", "LED", "FAN", "PUMP", "LED_APP", "FAN_APP", "PUMP_APP"]
+CMD = ["TEMP", "HUMID", "SOIL", "BRIGHT", "LED", "FAN", "PUMP", "control"]
 VALID_VALUE ={
     "LED": ['0', '1'],
     "FAN": ['0', '1', '2', '3'],
@@ -19,7 +19,7 @@ class UART:
     port_error = False
     feed_list = list()
     value_list = list()
-
+    check_connection = False
     def __init__(self) -> None:
         #self.ser =serial.Serial(port=self.getPort(), baudrate=115200)
         try:
@@ -59,6 +59,8 @@ class UART:
             self.send_data(f"!{feed}:2#")
         elif feed in ["LED", "FAN", "PUMP"] and value not in VALID_VALUE[feed]:
             self.send_data(f"!{feed}:2#")
+        elif feed == "control":
+            self.check_connection = True
         else:
             self.send_data(f"!{feed}:0#")
             self.feed_list.append(feed)
@@ -80,7 +82,6 @@ class UART:
                     self.mess = self.mess[end+1:]
     
     def send_data(self, mess):
-        self.check_connection = False
         self.ser.write(mess.encode())
         return
     def query(self, cmd:str):

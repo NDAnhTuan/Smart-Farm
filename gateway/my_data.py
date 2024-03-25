@@ -7,10 +7,7 @@ ST_CAL_AND_SENDING = 1
 class Data:
     def __init__(self) -> None:
         # state of controlled devices
-        self.led = str()
-        self.pump = str()
-        self.fan = str()
-        self.change_in_device = list()
+        self.change_in_device = dict()
         # data get from sensors
         self.temperature = list()
         self.humidity = list()
@@ -30,7 +27,6 @@ class Data:
         self.std_bright = 0
         self.std_soil = 0
 
-        self.state = 0
     
     def get_all_data(self, feed_list, value_list):
         while len(feed_list) != 0:
@@ -47,25 +43,11 @@ class Data:
         elif cmd == CMD[2]:
             self.soil_moisture.append(value)
         elif cmd == CMD[3]:
-            self.brightness.append(value)            
-        elif cmd == CMD[4]:
-            if st_query == ST_IDLE:
-                self.change_in_device.append(cmd)
-            else:
-                received["LED"] = True
-            self.led = value
-        elif cmd == CMD[5]:
-            if st_query == ST_IDLE:
-                self.change_in_device.append(cmd)
-            else:
-                received["FAN"] = True
-            self.fan = value
-        elif cmd == CMD[6]:
-            if st_query == ST_IDLE:
-                self.change_in_device.append(cmd)
-            else:
-                received["PUMP"] = True
-            self.pump = value
+            self.brightness.append(value)
+        elif cmd in received.keys():
+            self.change_in_device[cmd] = value
+            received[cmd] = True
+
     
     def calculate(self):
         try:
@@ -91,7 +73,6 @@ class Data:
             self.humidity.clear()
             self.brightness.clear()
             self.soil_moisture.clear()
-            pass
         except:
             print("no change in data sensor")
             pass

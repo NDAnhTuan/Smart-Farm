@@ -1,27 +1,31 @@
 # this is Adafruit Connection module by paho-mqtt
 import paho.mqtt.client as mqtt
-import time
 import sys
 from my_data import Data
 
+
 class AdafruitConnection:
     # Some config paras
-    AIO_FEED_NAMES = ['aiot-brightness', 
-                      'aiot-humidity', 
-                      'aiot-soil-moisture', 
-                      'aiot-temperature', 
-                      'aiot-led', 
+    AIO_FEED_NAMES = ['aiot-brightness',
+                      'aiot-humidity',
+                      'aiot-soil-moisture',
+                      'aiot-temperature',
+                      'aiot-led',
                       'aiot-pump',
-                      'aiot-fan']
+                      'aiot-fan',
+                      'aiot-connection']
     AIO_USERNAME = 'lamphat'
     AIO_KEY = ''
     AIO_HOST = 'io.adafruit.com'
     client = None
-
+    buffer = str()
+    self_publish = 0
+    received = False
     # The callback for when the client receives a CONN_ACK response from the server.
+
     def connected(self, client, user_data, flags, rc):
         # Connected function will be called when the client is connected to Adafruit IO.
-        if(rc == 0):
+        if (rc == 0):
             print('Successfully connecting to the server')
         else:
             print("connecting to the server fail")
@@ -42,32 +46,54 @@ class AdafruitConnection:
         # decode payload from bytes to string
         data = data.decode('utf-8')
         print(f'Feed {msg.topic} received new value: {data}')
+        feed = msg.topic.split('/')
+        if feed[2] in self.AIO_FEED_NAMES[4:6+1]:
+            if self.self_publish == 0:
+                if feed[2] == 'aiot-fan':
+                    cmd = data
+                elif feed[2] == 'aiot-led':
+                    cmd = int(data) + 4
+                else:
+                    cmd = int(data) + 6
+                self.buffer = f'!control:{cmd}#'
+                print(self.buffer)
+                self.received = True
+            elif self.self_publish > 0:
+                self.self_publish -= 1
 
     def disconnected(self, client, user_data, rc):
         # Disconnected function will be called when the client disconnects.
         print('Disconnected from Adafruit IO!')
         sys.exit(1)
+
     def publish_data(self, my_data: Data):
-        self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[0]}'
-                            , my_data.mean_bright)
-        self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[1]}'
-                            , my_data.mean_humid)
-        self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[2]}'
-                            , my_data.mean_soil)
-        self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[3]}'
-                            , my_data.mean_temp)
+        self.client.publish(
+            f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[0]}', my_data.mean_bright)
+        self.client.publish(
+            f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[1]}', my_data.mean_humid)
+        self.client.publish(
+            f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[2]}', my_data.mean_soil)
+        self.client.publish(
+            f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[3]}', my_data.mean_temp)
         return
-    def publish_data_2(self, cmd, value):
-        if cmd == "LED":
-            self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[4]}'
-                            , value)
-        elif cmd == "PUMP":
-            self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[5]}'
-                            , value)
-        elif cmd == "FAN":
-            self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[6]}'
-                            , value)
-        return
+
+    def update_change_in_device(self, my_data: Data):
+        for x in my_data.change_in_device:
+            if x == "LED":
+                self.client.publish(
+                    f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[4]}', my_data.change_in_device[x])
+                self.self_publish += 1
+            elif x == "FAN":
+                self.client.publish(
+                    f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[6]}', my_data.change_in_device[x])
+                self.self_publish += 1
+            elif x == "PUMP":
+                self.client.publish(
+                    f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[5]}', my_data.change_in_device[x])
+                self.self_publish += 1
+
+        my_data.change_in_device.clear()
+
     def __init__(self):
         self.client = mqtt.Client()
         # Enable TLS and use port 8883
