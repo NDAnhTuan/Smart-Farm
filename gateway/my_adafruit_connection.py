@@ -2,7 +2,7 @@
 import paho.mqtt.client as mqtt
 import time
 import sys
-from my_data import SensorData
+from my_data import Data
 
 class AdafruitConnection:
     # Some config paras
@@ -41,7 +41,7 @@ class AdafruitConnection:
         # Disconnected function will be called when the client disconnects.
         print('Disconnected from Adafruit IO!')
         sys.exit(1)
-    def publish_data(self, my_data: SensorData):
+    def publish_data(self, my_data: Data):
         self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[0]}'
                             , my_data.mean_bright)
         self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[1]}'

@@ -12,7 +12,8 @@ if True:
     my_serial = UART()
 
 while True:
-    fsm_query()
+    fsm_query(my_serial)
+    
     if my_serial.port_error == False:
         my_serial.ReadSerial()
         my_data.get_all_data(feed_list=my_serial.feed_list, value_list=my_serial.value_list)

@@ -9,9 +9,9 @@ COM_WSL = "/dev/ttyS0"
 
 CMD = ["TEMP", "HUMID", "SOIL", "BRIGHT", "LED", "FAN", "PUMP", "LED_APP", "FAN_APP", "PUMP_APP"]
 VALID_VALUE ={
-    "LED": ['0 ', '1 '],
-    "FAN": ['0 ', '1 ', '2 ', '3 '],
-    "PUMP": ['0 ', '1 ']
+    "LED": ['0', '1'],
+    "FAN": ['0', '1', '2', '3'],
+    "PUMP": ['0', '1']
 }
 class UART:
     ser = NONE
@@ -69,6 +69,7 @@ class UART:
         if (bytesToRead > 0):
             self.mess = self.mess + self.ser.read(bytesToRead).decode("UTF-8")
             print(self.mess)
+            self.mess.replace(' ','')
             while ("#" in self.mess) and ("!" in self.mess):
                 start = self.mess.find("!")
                 end = self.mess.find("#")
