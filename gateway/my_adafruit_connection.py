@@ -57,7 +57,7 @@ class AdafruitConnection:
         self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[3]}'
                             , my_data.mean_temp)
         return
-    def publish_data(self, cmd, value):
+    def publish_data_2(self, cmd, value):
         if cmd == "LED":
             self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[4]}'
                             , value)
