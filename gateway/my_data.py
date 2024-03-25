@@ -1,6 +1,6 @@
 import statistics
 from my_serial import CMD
-from my_fsm import received
+from my_fsm import received, st_query, ST_IDLE
 ST_GETTING = 0
 ST_CAL_AND_SENDING = 1
 
@@ -10,14 +10,15 @@ class Data:
         self.led = str()
         self.pump = str()
         self.fan = str()
+        self.change_in_device = list()
         # data get from sensors
         self.temperature = list()
         self.humidity = list()
         self.brightness = list()
         self.soil_moisture = list()
-        # is_data_valid = true --> can send data
-        # is_data_valid = false --> can not send data
-        self.is_data_valid = False
+       
+        self.is_data_valid = False  # is_data_valid = true --> can send data
+                                    # is_data_valid = false --> can not send data
         # average value of list
         self.mean_temp = 0
         self.mean_humid = 0
@@ -36,8 +37,9 @@ class Data:
             self.get_single_data(feed_list[0], value_list[0])
             feed_list.pop(0)
             value_list.pop(0)
+
     def get_single_data(self, cmd, value):
-        global received
+        global received, st_query, ST_IDLE
         if cmd == CMD[0]:
             self.temperature.append(value)
         elif cmd == CMD[1]:
@@ -47,13 +49,22 @@ class Data:
         elif cmd == CMD[3]:
             self.brightness.append(value)            
         elif cmd == CMD[4]:
-            received["LED"] = True
+            if st_query == ST_IDLE:
+                self.change_in_device.append(cmd)
+            else:
+                received["LED"] = True
             self.led = value
         elif cmd == CMD[5]:
-            received["FAN"] = True
+            if st_query == ST_IDLE:
+                self.change_in_device.append(cmd)
+            else:
+                received["FAN"] = True
             self.fan = value
         elif cmd == CMD[6]:
-            received["PUMP"] = True
+            if st_query == ST_IDLE:
+                self.change_in_device.append(cmd)
+            else:
+                received["PUMP"] = True
             self.pump = value
     
     def calculate(self):

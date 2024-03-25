@@ -6,7 +6,13 @@ from my_data import Data
 
 class AdafruitConnection:
     # Some config paras
-    AIO_FEED_NAMES = ['aiot-brightness', 'aiot-humidity', 'aiot-soil-moisture', 'aiot-temperature']
+    AIO_FEED_NAMES = ['aiot-brightness', 
+                      'aiot-humidity', 
+                      'aiot-soil-moisture', 
+                      'aiot-temperature', 
+                      'aiot-led', 
+                      'aiot-pump',
+                      'aiot-fan']
     AIO_USERNAME = 'lamphat'
     AIO_KEY = ''
     AIO_HOST = 'io.adafruit.com'
@@ -18,7 +24,7 @@ class AdafruitConnection:
         if(rc == 0):
             print('Successfully connecting to the server')
         else:
-            print("connecting fail")
+            print("connecting to the server fail")
         for topic in self.AIO_FEED_NAMES:
             client.subscribe(f'{self.AIO_USERNAME}/feeds/{topic}')
 
@@ -50,6 +56,17 @@ class AdafruitConnection:
                             , my_data.mean_soil)
         self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[3]}'
                             , my_data.mean_temp)
+        return
+    def publish_data(self, cmd, value):
+        if cmd == "LED":
+            self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[4]}'
+                            , value)
+        elif cmd == "PUMP":
+            self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[5]}'
+                            , value)
+        elif cmd == "FAN":
+            self.client.publish(f'{self.AIO_USERNAME}/feeds/{self.AIO_FEED_NAMES[6]}'
+                            , value)
         return
     def __init__(self):
         self.client = mqtt.Client()

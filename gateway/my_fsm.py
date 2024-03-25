@@ -15,7 +15,7 @@ received = {
 cnt_query = 0
 def fsm_query(my_serial: UART):
     global st_query, timer_query,timer_wait_query, received, cnt_query
-    print(st_query)
+    #print(st_query)
     if st_query == ST_IDLE:
         timer_query -= 1
         if timer_query <= 0:
