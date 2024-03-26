@@ -25,8 +25,13 @@ public class GroupServiceImpl implements GroupService {
     private AdafruitService adafruitService;
 
     @Override
-    public List<FeedDto> getFeedList(String username) throws JsonMappingException, JsonProcessingException {
-        List<FeedAda> feedAdas = adafruitService.getFeedGroup(username);
+    public List<FeedDto> getFeedList(String username) throws InternalError {
+        List<FeedAda> feedAdas;
+        try {
+            feedAdas = adafruitService.getFeedGroup(username);
+        } catch (JsonProcessingException e) {
+            throw new InternalError("Error: Server Error!");
+        }
         List<FeedDto> result = new ArrayList<>();
         for (FeedAda feed : feedAdas){
             result.add(new FeedDto(feed));

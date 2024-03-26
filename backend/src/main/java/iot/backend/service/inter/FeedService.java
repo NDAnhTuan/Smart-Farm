@@ -9,15 +9,15 @@ import iot.backend.dto.FeedDto;
 
 @Service
 public interface FeedService {
-    public FeedDto getFeedInfo (String feedKey);
+    public FeedDto getFeedInfo (String feedKey) throws InternalError;
 
-    public List<DataDto> getFeedData(String feedKey);
+    public List<DataDto> getFeedData(String feedKey) throws InternalError;
 
-    public List<DataDto> getFeedDataFrom(String feedKey, String start);
+    public List<DataDto> getFeedDataFrom(String feedKey, String start) throws InternalError;
 
-    public List<DataDto> getFeedDataFromLimit(String feedKey, String start, Integer limit);
+    public List<DataDto> getFeedDataFromLimit(String feedKey, String start, Integer limit) throws InternalError;
 
-    public DataDto getLastFeedData(String feedKey);
+    public DataDto getLastFeedData(String feedKey) throws InternalError;
 
-    public void postFeedData(String feedKey, String value);
+    public void postFeedData(String feedKey, Double value) throws InternalError;
 }

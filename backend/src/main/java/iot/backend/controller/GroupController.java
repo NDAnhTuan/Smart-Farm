@@ -43,38 +43,13 @@ public class GroupController {
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                                 .body(e.getMessage());
+        } catch (Error e) {
+            return ResponseEntity.internalServerError()
+                                .body(e.getMessage());
         }
     }
 
-    @GetMapping("/{username}/feeds/{feedId}")
-    public ResponseEntity<?> getFeed(@PathVariable String useraname, @PathVariable Long feedId ) {
-        try {
-            
-        } catch (Exception e) {
-            
-        }
-        return ResponseEntity.ok(null);
-    }
-
-    @GetMapping("/{username}/feeds/{feedId}/data")
-    public ResponseEntity<?> getFeedData(@PathVariable String useraname, @PathVariable Long feedId) {
-        try {
-            
-        } catch (Exception e) {
-            
-        }
-        return ResponseEntity.ok(null);
-    }
-    
-    @PostMapping("/{username}/feeds/{feedId}/data")
-    public ResponseEntity<?> createFeedData(@PathVariable String useraname, @PathVariable Long feedId) {
-        try {
-            
-        } catch (Exception e) {
-            
-        }
-        return ResponseEntity.ok(null);
-    }
+   
     
     
     

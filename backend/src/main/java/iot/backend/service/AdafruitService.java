@@ -1,11 +1,12 @@
 package iot.backend.service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +24,7 @@ import iot.backend.postdata.Datum;
 @Service
 public class AdafruitService {
     private final String AdaUrl = "https://io.adafruit.com/api/v2";
+
 
     public List<FeedAda> getFeedGroup(String groupKey) throws JsonMappingException, JsonProcessingException{
         RestTemplate restTemplate = new RestTemplate();   
@@ -86,13 +88,13 @@ public class AdafruitService {
         return data;
     }
 
-    public List<Data> getLastFeedData (String feedKey) throws JsonMappingException, JsonProcessingException {
+    public Data getLastFeedData (String feedKey) throws JsonMappingException, JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate(); 
         String adaUrl = AdaUrl + '/' + 
                         UserNameServer + '/' +
                         "feeds" + '/' +
                         feedKey + '/' + 
-                        "data/last";
+                        "data/last?x-aio-key=" + IOKey;
                         
         String feedDataJson = restTemplate.getForObject(adaUrl, String.class);
         
@@ -100,25 +102,28 @@ public class AdafruitService {
                                         .findAndRegisterModules()
                                         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     
-        List<Data> data = new ArrayList<>();
-        data = Arrays.asList(objectMapper.readValue(feedDataJson, Data[].class));        
+        Data data = objectMapper.readValue(feedDataJson, Data.class);        
         return data;
     }
 
 
-    public void postFeedData(String feedKey, String value) throws JsonProcessingException{
+    public void postFeedData(String feedKey, Double value) throws JsonProcessingException{
         RestTemplate restTemplate = new RestTemplate();
+       
 
         String adaUrl = AdaUrl + '/' + 
                         UserNameServer + '/' +
                         "feeds" + '/' +
                         feedKey + '/' + 
-                        "data";
+                        "data?x-aio-key=" + IOKey;
         Datum data = new Datum(value);
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String dataJson = ow.writeValueAsString(data);
-
-        restTemplate.postForObject(adaUrl, dataJson, String.class);
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Datum> httpEntity = new HttpEntity<>(data,header);
+        // ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        // String dataJson = ow.writeValueAsString(data);
+        // System.out.println(dataJson);
+        restTemplate.postForObject(adaUrl, httpEntity, String.class);
     }
 
 }

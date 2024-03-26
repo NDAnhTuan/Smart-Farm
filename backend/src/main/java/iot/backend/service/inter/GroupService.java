@@ -15,5 +15,5 @@ import iot.backend.exception.NotFound;
 
 @Service
 public interface GroupService {
-    public List<FeedDto> getFeedList(String username) throws JsonMappingException, JsonProcessingException;
+    public List<FeedDto> getFeedList(String username) throws InternalError;
 }
