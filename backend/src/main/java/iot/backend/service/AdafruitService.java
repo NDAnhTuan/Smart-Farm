@@ -24,6 +24,7 @@ import iot.backend.postdata.Datum;
 @Service
 public class AdafruitService {
     private final String AdaUrl = "https://io.adafruit.com/api/v2";
+    
 
     public List<FeedAda> getFeedGroup(String groupKey) throws JsonMappingException, JsonProcessingException{
         RestTemplate restTemplate = new RestTemplate();   
