@@ -19,5 +19,5 @@ public interface FeedService {
 
     public DataDto getLastFeedData(String feedKey) throws InternalError;
 
-    public void postFeedData(String feedKey, Double value) throws InternalError;
+    public Boolean postFeedData(String feedKey, Double value) throws InternalError;
 }

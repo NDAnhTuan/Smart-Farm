@@ -106,10 +106,9 @@ public class AdafruitService {
         return data;
     }
 
-    public void postFeedData(String feedKey, Double value) throws JsonProcessingException{
+    public boolean postFeedData(String feedKey, Double value) throws JsonProcessingException{
         RestTemplate restTemplate = new RestTemplate();
        
-
         String adaUrl = AdaUrl + '/' + 
                         UserNameServer + '/' +
                         "feeds" + '/' +
@@ -123,6 +122,9 @@ public class AdafruitService {
         // String dataJson = ow.writeValueAsString(data);
         // System.out.println(dataJson);
         restTemplate.postForObject(adaUrl, httpEntity, String.class);
+        Data lastData = getLastFeedData(feedKey);
+        if (lastData.getValue().equals(value.toString())) return true;
+        return false;
     }
 
     public List<FeedAda> getAllFeed() throws JsonMappingException, JsonProcessingException{

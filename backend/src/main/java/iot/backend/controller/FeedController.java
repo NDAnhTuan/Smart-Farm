@@ -57,8 +57,8 @@ public class FeedController {
     public ResponseEntity<?> sendFeedSignal(@PathVariable String username, @PathVariable String feedKey,
                                             @RequestParam Double value) {
         try {
-            feedService.postFeedData(feedKey,value);
-            return ResponseEntity.ok("");
+            if (feedService.postFeedData(feedKey,value)) return ResponseEntity.ok("Success");
+            return ResponseEntity.internalServerError().body("Failed");
         } catch (Error e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }

@@ -105,9 +105,9 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public void postFeedData(String feedKey, Double value) throws InternalError {
+    public Boolean postFeedData(String feedKey, Double value) throws InternalError {
         try {
-            adafruitService.postFeedData(feedKey,value);
+            return adafruitService.postFeedData(feedKey,value);
         } catch (Exception e) {
             throw new InternalError("Error: Server Error!");
         }
