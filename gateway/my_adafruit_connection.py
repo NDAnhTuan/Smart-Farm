@@ -6,17 +6,18 @@ from my_data import Data
 
 class AdafruitConnection:
     # Some config paras
-    AIO_FEED_NAMES = ['aiot-brightness',
-                      'aiot-humidity',
-                      'aiot-soil-moisture',
-                      'aiot-temperature',
-                      'aiot-led',
-                      'aiot-pump',
-                      'aiot-fan',
-                      'aiot-connection']
+    # AIO_FEED_NAMES = ['aiot-brightness',
+    #                   'aiot-humidity',
+    #                   'aiot-soil-moisture',
+    #                   'aiot-temperature',
+    #                   'aiot-led',
+    #                   'aiot-pump',
+    #                   'aiot-fan',
+    #                   'aiot-connection']
+    AIO_FEED_NAMES = ['V1']
     AIO_USERNAME = 'lamphat'
     AIO_KEY = ''
-    AIO_HOST = 'io.adafruit.com'
+    AIO_HOST = 'mqtt.ohstem.vn'
     client = None
     buffer = str()
     self_publish = 0
@@ -47,7 +48,7 @@ class AdafruitConnection:
         data = data.decode('utf-8')
         print(f'Feed {msg.topic} received new value: {data}')
         feed = msg.topic.split('/')
-        if feed[2] in self.AIO_FEED_NAMES[4:6+1]:
+        if feed[2] in self.AIO_FEED_NAMES:
             if self.self_publish == 0:
                 if feed[2] == 'aiot-fan':
                     cmd = data
@@ -97,14 +98,14 @@ class AdafruitConnection:
     def __init__(self):
         self.client = mqtt.Client()
         # Enable TLS and use port 8883
-        self.client.tls_set_context()
+        # self.client.tls_set_context()
         # Enter Adafruit IO credentials
         self.client.username_pw_set(self.AIO_USERNAME, self.AIO_KEY)
 
         self.client.on_connect = self.connected
         self.client.on_message = self.message
         self.client.on_subscribe = self.subscribed
-        self.client.connect(host=self.AIO_HOST, port=8883, keepalive=60)
+        self.client.connect(host=self.AIO_HOST, port=1883, keepalive=60)
 
         self.client.loop_start()
         # client loop forever is suitable for subscribe-only processes
