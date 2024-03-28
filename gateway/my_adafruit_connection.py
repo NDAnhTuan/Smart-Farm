@@ -51,7 +51,7 @@ class AdafruitConnection:
             if self.self_publish == 0:
                 if feed[2] == 'aiot-fan':
                     cmd = data
-                elif feed[2] == 'aiot-led':
+                elif feed[2] == 'aiot-pump':
                     cmd = int(data) + 4
                 else:
                     cmd = int(data) + 6
