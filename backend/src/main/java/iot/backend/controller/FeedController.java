@@ -19,7 +19,6 @@ public class FeedController {
     @Autowired
     private FeedService feedService;
 
-
     @GetMapping("/{username}/feeds/{feedKey}")
     public ResponseEntity<?> getFeedInfo(@PathVariable String username, @PathVariable String feedKey) {
         try {
@@ -31,7 +30,8 @@ public class FeedController {
     
     @GetMapping("/{username}/feeds/{feedKey}/data")
     public ResponseEntity<?> getFeedData(@PathVariable String username, @PathVariable String feedKey, 
-                                        @RequestParam(required = false) String start, @RequestParam(required = false) Integer limit) {
+                                        @RequestParam(required = false) String start, 
+                                        @RequestParam(required = false) Integer limit) {
         try {
             if (start!=null) {
                 if (limit != null) return ResponseEntity.ok(feedService.getFeedData(feedKey));
@@ -53,9 +53,6 @@ public class FeedController {
         
     }
 
-
-
-
     @PostMapping("/{username}/feeds/{feedKey}/data")
     public ResponseEntity<?> sendFeedSignal(@PathVariable String username, @PathVariable String feedKey,
                                             @RequestParam Double value) {
@@ -66,6 +63,4 @@ public class FeedController {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
-    
-    
 }

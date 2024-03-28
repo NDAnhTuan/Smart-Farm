@@ -37,9 +37,11 @@ public class GroupController {
     // }
 
     @GetMapping("/{username}/feeds")
-    public ResponseEntity<?> getFeedList(@PathVariable String username) {
+    public ResponseEntity<?> getFeedList(@PathVariable String username,
+                                        @RequestParam(required = false) String description) {
+        if (description == null) description = "";
         try {
-            return ResponseEntity.ok(groupService.getFeedList(username));
+            return ResponseEntity.ok(groupService.getAllFeed(username,description));
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                                 .body(e.getMessage());

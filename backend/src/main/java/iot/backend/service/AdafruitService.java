@@ -25,7 +25,6 @@ import iot.backend.postdata.Datum;
 public class AdafruitService {
     private final String AdaUrl = "https://io.adafruit.com/api/v2";
 
-
     public List<FeedAda> getFeedGroup(String groupKey) throws JsonMappingException, JsonProcessingException{
         RestTemplate restTemplate = new RestTemplate();   
         String groupInfoJson = restTemplate.getForObject(
@@ -106,7 +105,6 @@ public class AdafruitService {
         return data;
     }
 
-
     public void postFeedData(String feedKey, Double value) throws JsonProcessingException{
         RestTemplate restTemplate = new RestTemplate();
        
@@ -124,6 +122,23 @@ public class AdafruitService {
         // String dataJson = ow.writeValueAsString(data);
         // System.out.println(dataJson);
         restTemplate.postForObject(adaUrl, httpEntity, String.class);
+    }
+
+    public List<FeedAda> getAllFeed() throws JsonMappingException, JsonProcessingException{
+        RestTemplate restTemplate = new RestTemplate();
+
+        String adaUrl = AdaUrl + '/' + 
+                        UserNameServer + '/' +
+                        "feeds";
+
+        String feedJson = restTemplate.getForObject(adaUrl, String.class);
+        
+        ObjectMapper objectMapper = new ObjectMapper()
+                        .findAndRegisterModules()
+                        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        List<FeedAda> feeds = Arrays.asList(objectMapper.readValue(feedJson, FeedAda[].class));
+        return feeds; 
     }
 
 }

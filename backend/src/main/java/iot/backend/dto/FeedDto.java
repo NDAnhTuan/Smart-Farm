@@ -13,14 +13,19 @@ public class FeedDto {
 
     private String description;
 
-    private List<DataDto> data;
+    private String last_value;
+
+    //private List<DataDto> data;
 
     public FeedDto(FeedAda feed) {
+        this.last_value = feed.getLast_value();
         this.id = feed.getId();
         this.name = feed.getName();
         this.key = feed.getKey();
         this.description = feed.getDescription();
     }
+    
+    
 
     public Long getId() {
         return id;
@@ -54,13 +59,25 @@ public class FeedDto {
         this.description = description;
     }
 
-    public List<DataDto> getData() {
-        return data;
+
+
+    public String getLast_value() {
+        return last_value;
     }
 
-    public void setData(List<DataDto> data) {
-        this.data = data;
+
+
+    public void setLast_value(String last_value) {
+        this.last_value = last_value;
     }
+
+    // public List<DataDto> getData() {
+    //     return data;
+    // }
+
+    // public void setData(List<DataDto> data) {
+    //     this.data = data;
+    // }
 
     
 }

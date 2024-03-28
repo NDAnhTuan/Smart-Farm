@@ -38,6 +38,32 @@ public class GroupServiceImpl implements GroupService {
         }
         return result;
     }
+
+    @Override
+    public List<FeedDto> getAllFeed(String username, String des) throws InternalError {
+        List<FeedAda> feedAdas;
+        try {
+            feedAdas = adafruitService.getAllFeed();
+        } catch (JsonMappingException e) {
+            throw new InternalError("Error: Server Error!");
+        } catch (JsonProcessingException e) {
+            throw new InternalError("Error: Server Error!");
+        }
+        List<FeedDto> result = new ArrayList<>();
+        for (FeedAda feedAda : feedAdas){
+            if (feedAda.getGroup().getName().equals(username) ){
+                if(des != ""){
+                    if (feedAda.getDescription().equals(des)){
+                        result.add(new FeedDto(feedAda));
+                    }
+                }
+                else result.add(new FeedDto(feedAda));
+            }
+            
+        }
+        return result;
+
+    }
     
 
 

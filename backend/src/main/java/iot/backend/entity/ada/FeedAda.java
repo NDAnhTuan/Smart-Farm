@@ -16,8 +16,12 @@ public class FeedAda {
 
     private String description;
 
+    private String last_value;
+
     private List<Data> data;
      
+    private GroupAda group;
+
     @JsonAnySetter
     Map<String, Object> details = new LinkedHashMap<>();
 
@@ -29,6 +33,7 @@ public class FeedAda {
     public Long getId() {
         return id;
     }
+
 
     public void setId(Long id) {
         this.id = id;
@@ -72,6 +77,22 @@ public class FeedAda {
 
     public void setData(List<Data> data) {
         this.data = data;
+    }
+
+    public GroupAda getGroup() {
+        return group;
+    }
+
+    public void setGroup(GroupAda group) {
+        this.group = group;
+    }
+
+    public String getLast_value() {
+        return last_value;
+    }
+
+    public void setLast_value(String last_value) {
+        this.last_value = last_value;
     }
 
     

@@ -33,8 +33,6 @@ public class UserInfo {
         this.name = name;
     }
 
-
-
     public Integer getId() {
         return id;
     }

@@ -20,7 +20,6 @@ public class Data {
         details.put(key, value);
     }
 
-
     public Data(Long feed_id, String value, LocalDateTime created_at) {
         this.feed_id = feed_id;
         this.value = value;

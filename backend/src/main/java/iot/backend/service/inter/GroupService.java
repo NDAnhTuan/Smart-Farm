@@ -16,4 +16,6 @@ import iot.backend.exception.NotFound;
 @Service
 public interface GroupService {
     public List<FeedDto> getFeedList(String username) throws InternalError;
+
+    public List<FeedDto> getAllFeed(String username, String des) throws InternalError;
 }
