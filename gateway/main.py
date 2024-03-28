@@ -24,6 +24,7 @@ while True:
         if my_server.client.is_connected() == True:
             my_server.update_change_in_device(my_data=my_data)
         else:
+            my_data.change_in_device.clear()
             print("publish data fail")
 
     timer -= 1
