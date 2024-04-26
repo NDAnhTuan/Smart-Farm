@@ -1,5 +1,7 @@
 package iot.backend.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +17,11 @@ public class UserInfo {
     private String pwd;
 
     private String name;
+
+    // @OneToOne(mappedBy = "user")
+    // private DeviceOfUser deviceOfUser;
+
+    
 
 
     // @JsonIgnore
@@ -32,6 +39,8 @@ public class UserInfo {
         this.pwd = pwd;
         this.name = name;
     }
+
+
 
     public Integer getId() {
         return id;
