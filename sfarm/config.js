@@ -1,4 +1,4 @@
 export const config = {
-    userName: "username",
-    password: "key"
+    userName: "tdttvd",
+    password: "aio_shmi853gtJe24SOO5mLVKYhKVwoL"
 }

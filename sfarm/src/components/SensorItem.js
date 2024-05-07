@@ -1,38 +1,59 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
+import TempImg from "@assets/img/temp.jpg";
+
+const img = Image.resolveAssetSource(TempImg).uri;
 
 const SensorItem = ({ name, status }) => {
   return (
-    <View style={styles.sensorItem}>
-      <Text style={styles.itemName}>{name}</Text>
-      <Text style={styles.itemValue}>{status}</Text>
+    <View style={[styles.card, styles.shadowProp]}>
+      <Image style={styles.img} source={{ uri: img }} />
+      <View style={styles.text}>
+        <Text style={styles.itemName}>{name}</Text>
+        <Text style={styles.itemValue}>{status}</Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  sensorItem: {
+  card: {
     width: "75%",
-    padding: 16,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+    gap: 16,
     borderRadius: 8,
-    backgroundColor: "#00aeff",
     margin: 8,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: "white",
+  },
+  shadowProp: {
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  img: {
+    width: 75,
+    height: 75,
+    borderRadius: 8,
+  },
+  text: {
+    display: "flex",
+    flexDirection: "column",
   },
   itemName: {
-    color: "white",
     fontSize: 24,
     fontWeight: "500",
     textTransform: "capitalize",
   },
   itemValue: {
-    color: "white",
     fontSize: 24,
     fontWeight: "500",
-  }
+  },
 });
 
 export default SensorItem;
