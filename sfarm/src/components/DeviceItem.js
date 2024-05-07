@@ -35,15 +35,16 @@ const DeviceItem = ({ device_key, name, status, onStatusChange }) => {
       <View style={styles.displayItemText}>
         <Text style={styles.deviceName}>{name}</Text>
         <Text style={styles.deviceStatus}>{status}</Text>
+        {/* <Text style={styles.deviceLocation}>{location}</Text> */}
         <View style={styles.swi_and_sli}>
           <View>
             <Switch
               trackColor={{ false: "#767577", true: "#04dd28" }}
-              thumbColor={isSwitchOn ? "#f5dd4b" : "#f4f3f4"}
+              thumbColor={status ? "#f5dd4b" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               // onValueChange={toggleSwitch}
               // value={status === 'Bật' ? true : false}
-              value={isSwitchOn !== "0"}
+              value={status !== "0"}
               onValueChange={handleSwitchToggle}
             />
           </View>

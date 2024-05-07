@@ -32,16 +32,45 @@ const client = new Paho.MQTT.Client(
 const OnOffDevices = () => {
   const [devices, setDevices] = useState([]);
 
-  const handleStatusChange = () => {};
+  const handleStatusChange = (deviceName, newStatus) => {
+    let key;
+    const updatedDeviceList = devices.map(device => {
+      if (device.name === deviceName) {
+        key = device.key;
+        return {...device, status: newStatus};
+      }
+      return device;
+    });
+    setDevices(updatedDeviceList);
+    fetch(`https://io.adafruit.com/api/v2/tdttvd/feeds/${key}/data`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-AIO-Key": "key",
+      },
+      body: JSON.stringify({
+        value: newStatus,
+      }),
+    })
+      .then(() => {
+        console.log(key)
+        console.log("updated status successful");
+        
+        
+      })
+      .catch((err) => console.log(err));
+  };
 
   const subscribeList = (deviceList) => {
-    console.log("Subcribing...");
+    // console.log("Subcribing...");
     deviceList.forEach((device) => {
       client.subscribe(device.topic, { qos: 0 });
       console.log("Subscribed to " + device.topic);
     });
-    console.log("Subcribed");
+    // console.log("Subcribed");
   };
+
+  
 
   const connect = (devices) => {
     // Connect to Adafruit through MQTT protocol
@@ -64,6 +93,17 @@ const OnOffDevices = () => {
       console.log("Message arrived");
       console.log("Topic: " + message.destinationName);
       console.log("Value: " + message.payloadString);
+
+      const substrings = message.destinationName.split("/")[2];
+      const updatedDeviceList = devices.map(device => {
+        if (device.name === substrings) {
+          return {...device, status: message.payloadString};
+        }
+        return device;
+      });
+      setDevices(updatedDeviceList);
+      
+      console.log("Substrings: " + substrings);
       setDevices(prev => prev.map(device => {
         if (device.topic === message.destinationName) {
           device.status = message.payloadString
@@ -112,7 +152,8 @@ const OnOffDevices = () => {
           name={device.name}
           status={device.status}
           onStatusChange={handleStatusChange}
-        />
+         
+/>
       ))}
     </View>
   );
