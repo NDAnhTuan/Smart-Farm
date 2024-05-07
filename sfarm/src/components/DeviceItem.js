@@ -1,27 +1,31 @@
 import React, { useState } from "react";
 import { Text, View, Image, Switch, StyleSheet } from "react-native";
 import { Slider } from "@miblanchard/react-native-slider";
+import { config, client } from "@/config";
 
 const DeviceItem = ({ device_key, name, status, onStatusChange }) => {
   const [isSwitchOn, setIsSwitchOn] = useState(status);
 
   const handleSwitchToggle = (e) => {
     let newStatus = isSwitchOn === "1" ? "0" : "1";
-    fetch(`https://io.adafruit.com/api/v2/tdttvd/feeds/${device_key}/data`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-AIO-Key": "key",
-      },
-      body: JSON.stringify({
-        value: newStatus,
-      }),
-    })
-      .then(() => {
-        onStatusChange(name, newStatus);
-        setIsSwitchOn(newStatus);
-      })
-      .catch((err) => console.log(err));
+    client.publish(`${config.userName}/feeds/${device_key}`, newStatus);
+    // onStatusChange(name, newStatus);
+    setIsSwitchOn(newStatus);
+    // fetch(`https://io.adafruit.com/api/v2/tdttvd/feeds/${device_key}/data`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "X-AIO-Key": config.password,
+    //   },
+    //   body: JSON.stringify({
+    //     value: newStatus,
+    //   }),
+    // })
+    //   .then(() => {
+    //     onStatusChange(name, newStatus);
+    //     setIsSwitchOn(newStatus);
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -40,11 +44,11 @@ const DeviceItem = ({ device_key, name, status, onStatusChange }) => {
           <View>
             <Switch
               trackColor={{ false: "#767577", true: "#04dd28" }}
-              thumbColor={status ? "#f5dd4b" : "#f4f3f4"}
+              thumbColor={isSwitchOn ? "#f5dd4b" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               // onValueChange={toggleSwitch}
               // value={status === 'Bật' ? true : false}
-              value={status !== "0"}
+              value={isSwitchOn !== "0"}
               onValueChange={handleSwitchToggle}
             />
           </View>

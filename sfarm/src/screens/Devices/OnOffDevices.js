@@ -4,62 +4,63 @@ import DeviceItem from "@components/DeviceItem";
 
 import init from "react_native_mqtt";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {config} from "@/config";
+import {config, client} from "@/config";
 
-init({
-  size: 10000,
-  storageBackend: AsyncStorage,
-  defaultExpires: 1000 * 3600 * 24,
-  enableCache: true,
-  sync: {},
-});
+// init({
+//   size: 10000,
+//   storageBackend: AsyncStorage,
+//   defaultExpires: 1000 * 3600 * 24,
+//   enableCache: true,
+//   sync: {},
+// });
 
-const options = {
-  host: "io.adafruit.com",
-  port: 443,
-  path: "",
-  id: "id_" + parseInt(Math.random() * 100000),
-};
+// const options = {
+//   host: "io.adafruit.com",
+//   port: 443,
+//   path: "",
+//   id: "id_" + parseInt(Math.random() * 100000),
+// };
 
-// Setup client
-const client = new Paho.MQTT.Client(
-  options.host,
-  options.port,
-  options.path,
-  options.id
-);
+// // Setup client
+// const client = new Paho.MQTT.Client(
+//   options.host,
+//   options.port,
+//   options.path,
+//   options.id
+// );
 
 const OnOffDevices = () => {
   const [devices, setDevices] = useState([]);
 
-  const handleStatusChange = (deviceName, newStatus) => {
-    let key;
-    const updatedDeviceList = devices.map(device => {
-      if (device.name === deviceName) {
-        key = device.key;
-        return {...device, status: newStatus};
-      }
-      return device;
-    });
-    setDevices(updatedDeviceList);
-    fetch(`https://io.adafruit.com/api/v2/tdttvd/feeds/${key}/data`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-AIO-Key": "key",
-      },
-      body: JSON.stringify({
-        value: newStatus,
-      }),
-    })
-      .then(() => {
-        console.log(key)
-        console.log("updated status successful");
+  // const handleStatusChange = (deviceName, newStatus) => {
+  //   let key;
+  //   const updatedDeviceList = devices.map(device => {
+  //     if (device.name === deviceName) {
+  //       key = device.key;
+  //       return {...device, status: newStatus};
+  //     }
+  //     return device;
+  //   });
+  //   setDevices(updatedDeviceList);
+  //   fetch(`https://io.adafruit.com/api/v2/tdttvd/feeds/${key}/data`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "X-AIO-Key": "key",
+  //     },
+  //     body: JSON.stringify({
+  //       value: newStatus,
+  //     }),
+  //   })
+  //     .then(() => {
+  //       console.log(key)
+  //       console.log("updated status successful");
         
         
-      })
-      .catch((err) => console.log(err));
-  };
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+  const handleStatusChange = (deviceName, newStatus) => {}
 
   const subscribeList = (deviceList) => {
     // console.log("Subcribing...");
@@ -94,16 +95,6 @@ const OnOffDevices = () => {
       console.log("Topic: " + message.destinationName);
       console.log("Value: " + message.payloadString);
 
-      const substrings = message.destinationName.split("/")[2];
-      const updatedDeviceList = devices.map(device => {
-        if (device.name === substrings) {
-          return {...device, status: message.payloadString};
-        }
-        return device;
-      });
-      setDevices(updatedDeviceList);
-      
-      console.log("Substrings: " + substrings);
       setDevices(prev => prev.map(device => {
         if (device.topic === message.destinationName) {
           device.status = message.payloadString
@@ -121,7 +112,7 @@ const OnOffDevices = () => {
 
   useEffect(() => {
     // Fetch Adafruit API to get initial values
-    fetch("https://io.adafruit.com/api/v2/tdttvd/feeds")
+    fetch("https://io.adafruit.com/api/v2/tdttvd/feeds/devices")
       .then((response) => response.json())
       .then((json) => {
         data = json.map((device) => {
