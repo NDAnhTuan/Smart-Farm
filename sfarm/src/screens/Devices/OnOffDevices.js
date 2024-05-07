@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Component } from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View } from "react-native";
 import DeviceItem from "@components/DeviceItem";
 
 import init from "react_native_mqtt";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {config, client} from "@/config";
+import { config } from "@/config";
 
 // init({
 //   size: 10000,
@@ -32,35 +32,7 @@ import {config, client} from "@/config";
 const OnOffDevices = () => {
   const [devices, setDevices] = useState([]);
 
-  // const handleStatusChange = (deviceName, newStatus) => {
-  //   let key;
-  //   const updatedDeviceList = devices.map(device => {
-  //     if (device.name === deviceName) {
-  //       key = device.key;
-  //       return {...device, status: newStatus};
-  //     }
-  //     return device;
-  //   });
-  //   setDevices(updatedDeviceList);
-  //   fetch(`https://io.adafruit.com/api/v2/tdttvd/feeds/${key}/data`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "X-AIO-Key": "key",
-  //     },
-  //     body: JSON.stringify({
-  //       value: newStatus,
-  //     }),
-  //   })
-  //     .then(() => {
-  //       console.log(key)
-  //       console.log("updated status successful");
-        
-        
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-  const handleStatusChange = (deviceName, newStatus) => {}
+  const handleStatusChange = () => {};
 
   const subscribeList = (deviceList) => {
     // console.log("Subcribing...");
@@ -70,8 +42,6 @@ const OnOffDevices = () => {
     });
     // console.log("Subcribed");
   };
-
-  
 
   const connect = (devices) => {
     // Connect to Adafruit through MQTT protocol
@@ -95,12 +65,14 @@ const OnOffDevices = () => {
       console.log("Topic: " + message.destinationName);
       console.log("Value: " + message.payloadString);
 
-      setDevices(prev => prev.map(device => {
-        if (device.topic === message.destinationName) {
-          device.status = message.payloadString
-        }
-        return device;
-      }))
+      setDevices((prev) =>
+        prev.map((device) => {
+          if (device.topic === message.destinationName) {
+            device.status = message.payloadString;
+          }
+          return device;
+        })
+      );
     };
 
     client.onConnectionLost = (responseObject) => {
@@ -135,18 +107,20 @@ const OnOffDevices = () => {
   }, []);
 
   return (
-    <View style={styles.deviceList}>
-      {devices.map((device) => (
-        <DeviceItem
-          key={device.key}
-          device_key={device.key}
-          name={device.name}
-          status={device.status}
-          onStatusChange={handleStatusChange}
-         
-/>
-      ))}
-    </View>
+    <>
+      <View style={styles.deviceList}>
+        {devices.map((device) => (
+          <DeviceItem
+            key={device.key}
+            device_key={device.key}
+            name={device.name}
+            status={device.status}
+            onStatusChange={handleStatusChange}
+            client={client}
+          />
+        ))}
+      </View>
+    </>
   );
 };
 

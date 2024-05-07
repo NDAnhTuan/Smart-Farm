@@ -1,31 +1,15 @@
 import React, { useState } from "react";
 import { Text, View, Image, Switch, StyleSheet } from "react-native";
 import { Slider } from "@miblanchard/react-native-slider";
-import { config, client } from "@/config";
+import { config } from "@/config";
 
-const DeviceItem = ({ device_key, name, status, onStatusChange }) => {
+const DeviceItem = ({ device_key, name, status, onStatusChange, client }) => {
   const [isSwitchOn, setIsSwitchOn] = useState(status);
 
   const handleSwitchToggle = (e) => {
     let newStatus = isSwitchOn === "1" ? "0" : "1";
     client.publish(`${config.userName}/feeds/${device_key}`, newStatus);
-    // onStatusChange(name, newStatus);
     setIsSwitchOn(newStatus);
-    // fetch(`https://io.adafruit.com/api/v2/tdttvd/feeds/${device_key}/data`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "X-AIO-Key": config.password,
-    //   },
-    //   body: JSON.stringify({
-    //     value: newStatus,
-    //   }),
-    // })
-    //   .then(() => {
-    //     onStatusChange(name, newStatus);
-    //     setIsSwitchOn(newStatus);
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   return (
