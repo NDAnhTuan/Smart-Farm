@@ -10,7 +10,10 @@ const Home = ({ navigation }) => {
       >
         <Text style={styles.text}>Thiết bị bật tắt</Text>
       </Pressable>
-      <Pressable style={[styles.button, styles.sensor]} onPress={() => {}}>
+      <Pressable
+        style={[styles.button, styles.sensor]}
+        onPress={() => navigation.navigate("SensorDevices")}
+      >
         <Text style={styles.text}>Thiết bị cảm biến</Text>
       </Pressable>
     </View>
