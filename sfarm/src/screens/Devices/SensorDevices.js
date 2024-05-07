@@ -115,8 +115,6 @@ const SensorDevices = () => {
             device_key={device.key}
             name={device.name}
             status={device.status}
-            onStatusChange={handleStatusChange}
-            client={client}
           />
         ))}
       </View>

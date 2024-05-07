@@ -1,10 +1,24 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
-import TempImg from "@assets/img/temp.jpg";
+import {TempImg, HumidImg, BrightImg} from "@assets/img/index";
 
-const img = Image.resolveAssetSource(TempImg).uri;
+const tempImg = Image.resolveAssetSource(TempImg).uri;
+const humidImg = Image.resolveAssetSource(HumidImg).uri;
+const brightImg = Image.resolveAssetSource(BrightImg).uri;
 
-const SensorItem = ({ name, status }) => {
+const SensorItem = ({ device_key, name, status }) => {
+  const typ = device_key.split('.')[1][0];
+  switch (typ) {
+    case 't':
+      img = tempImg;
+      break;
+    case 'h':
+      img = humidImg;
+      break;
+    default:
+      img = brightImg;
+      break;
+  }
   return (
     <View style={[styles.card, styles.shadowProp]}>
       <Image style={styles.img} source={{ uri: img }} />
