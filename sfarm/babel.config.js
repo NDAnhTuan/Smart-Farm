@@ -7,10 +7,10 @@ module.exports = function (api) {
         "module-resolver",
         {
           alias: {
-            "@": ".",
             "@assets": "./assets",
             "@screens": "./src/screens",
             "@components": "./src/components",
+            "@": ".",
           },
         },
       ],

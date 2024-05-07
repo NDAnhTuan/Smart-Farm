@@ -3,7 +3,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Devices from "@screens/Devices";
-import Areas from "@screens/Areas";
+import Notifications from "@screens/Notifications";
 import Dashboard from "@screens/Dashboard";
 
 const Tab = createBottomTabNavigator();
@@ -27,10 +27,10 @@ const MyTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Khu vực"
-        component={Areas}
+        name="Thông báo"
+        component={Notifications}
         options={{
-          tabBarLabel: "Khu vực",
+          tabBarLabel: "Thông báo",
           tabBarIcon: ({ color, size }) => (
             <Icon name="bell" color={color} size={size} />
           ),

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
-import DeviceItem from "@components/DeviceItem";
+import SensorItem from "@components/SensorItem";
 
 import init from "react_native_mqtt";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -29,10 +29,10 @@ const client = new Paho.MQTT.Client(
   options.id
 );
 
-const OnOffDevices = () => {
+const SensorDevices = () => {
   const [devices, setDevices] = useState([]);
 
-  
+  const handleStatusChange = () => {};
 
   const subscribeList = (deviceList) => {
     // console.log("Subcribing...");
@@ -84,7 +84,7 @@ const OnOffDevices = () => {
 
   useEffect(() => {
     // Fetch Adafruit API to get initial values
-    fetch(`https://io.adafruit.com/api/v2/tdttvd/groups/devices/feeds`)
+    fetch(`https://io.adafruit.com/api/v2/tdttvd/groups/sensors/feeds`)
       .then((response) => response.json())
       .then((json) => {
         data = json.map((device) => {
@@ -110,11 +110,12 @@ const OnOffDevices = () => {
     <>
       <View style={styles.deviceList}>
         {devices.map((device) => (
-          <DeviceItem
+          <SensorItem
             key={device.key}
             device_key={device.key}
             name={device.name}
             status={device.status}
+            onStatusChange={handleStatusChange}
             client={client}
           />
         ))}
@@ -134,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnOffDevices;
+export default SensorDevices;
