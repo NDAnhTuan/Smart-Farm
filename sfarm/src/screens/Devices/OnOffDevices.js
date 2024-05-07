@@ -6,33 +6,33 @@ import init from "react_native_mqtt";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { config } from "@/config";
 
-// init({
-//   size: 10000,
-//   storageBackend: AsyncStorage,
-//   defaultExpires: 1000 * 3600 * 24,
-//   enableCache: true,
-//   sync: {},
-// });
+init({
+  size: 10000,
+  storageBackend: AsyncStorage,
+  defaultExpires: 1000 * 3600 * 24,
+  enableCache: true,
+  sync: {},
+});
 
-// const options = {
-//   host: "io.adafruit.com",
-//   port: 443,
-//   path: "",
-//   id: "id_" + parseInt(Math.random() * 100000),
-// };
+const options = {
+  host: "io.adafruit.com",
+  port: 443,
+  path: "",
+  id: "id_" + parseInt(Math.random() * 100000),
+};
 
-// // Setup client
-// const client = new Paho.MQTT.Client(
-//   options.host,
-//   options.port,
-//   options.path,
-//   options.id
-// );
+// Setup client
+const client = new Paho.MQTT.Client(
+  options.host,
+  options.port,
+  options.path,
+  options.id
+);
 
 const OnOffDevices = () => {
   const [devices, setDevices] = useState([]);
 
-  const handleStatusChange = () => {};
+  
 
   const subscribeList = (deviceList) => {
     // console.log("Subcribing...");
@@ -84,7 +84,7 @@ const OnOffDevices = () => {
 
   useEffect(() => {
     // Fetch Adafruit API to get initial values
-    fetch("https://io.adafruit.com/api/v2/tdttvd/feeds/devices")
+    fetch("https://io.adafruit.com/api/v2/tdttvd/groups/devices/feeds")
       .then((response) => response.json())
       .then((json) => {
         data = json.map((device) => {
@@ -115,7 +115,6 @@ const OnOffDevices = () => {
             device_key={device.key}
             name={device.name}
             status={device.status}
-            onStatusChange={handleStatusChange}
             client={client}
           />
         ))}
