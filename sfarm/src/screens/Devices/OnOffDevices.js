@@ -32,7 +32,7 @@ const client = new Paho.MQTT.Client(
 const OnOffDevices = () => {
   const [devices, setDevices] = useState([]);
 
-  const handleStatusChange = () => {};
+  
 
   const subscribeList = (deviceList) => {
     // console.log("Subcribing...");
@@ -115,7 +115,6 @@ const OnOffDevices = () => {
             device_key={device.key}
             name={device.name}
             status={device.status}
-            onStatusChange={handleStatusChange}
             client={client}
           />
         ))}
