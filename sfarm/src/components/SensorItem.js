@@ -32,7 +32,7 @@ const SensorItem = ({ device_key, name, status }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: "75%",
+    width: "80%",
     paddingVertical: 24,
     paddingHorizontal: 16,
     gap: 16,

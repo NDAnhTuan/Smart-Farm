@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "636312130400",
+    "project_id": "sfarm-demo",
+    "storage_bucket": "sfarm-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636312130400:android:09f380404c9fd2788e8405",
+        "android_client_info": {
+          "package_name": "com.tdttvd.sfarm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsLzEX7tWnvd083WFKJ7zPkhYbW9o_bnE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

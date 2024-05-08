@@ -1,11 +1,17 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
+import registerNNPushToken from "native-notify";
 import MyTabs from "src/MyTabs";
+import { config } from "@/config";
 
 export default function App() {
-  return <NavigationContainer>
-    <MyTabs />
-  </NavigationContainer>;
+  registerNNPushToken(config.appId, config.appToken);
+
+  return (
+    <NavigationContainer>
+      <MyTabs />
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
