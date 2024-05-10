@@ -60,23 +60,41 @@ class Data:
             self.std_soil = statistics.pstdev(self.soil_moisture)
             self.std_temp = statistics.pstdev(self.temperature)
 
-            while self.std_bright > 4:
-                # remove outliers
-                # recalculate mean
-                # recalculate std
+            while self.std_bright > 5:
+                q1,_,q3 = statistics.quantiles(self.brightness)
+                iqr = q3 - q1
+                for x in self.brightness:
+                    if x < q1 - iqr * 1.5 or x > q3 + iqr * 1.5:
+                        self.brightness.remove(x)
+                self.mean_bright = statistics.mean(self.brightness)
+                self.std_bright = statistics.pstdev(self.brightness)
+            
+            while self.std_humid > 10:
+                q1,_,q3 = statistics.quantiles(self.humidity)
+                iqr = q3 - q1
+                for x in self.humidity:
+                    if x < q1 - iqr * 1.5 or x > q3 + iqr * 1.5:
+                        self.humidity.remove(x)
+                self.mean_humid = statistics.mean(self.humidity)
+                self.std_humid = statistics.pstdev(self.humidity)
                 
-                pass
-            while self.std_humid > 5:
-                pass
-            while self.std_soil > 5:
-                pass
-            while self.std_temp > 5:
-                pass
-            self.temperature.clear()
-            self.humidity.clear()
-            self.brightness.clear()
-            self.soil_moisture.clear()  
-
+            while self.std_soil > 0.2:
+                q1,_,q3 = statistics.quantiles(self.soil_moisture)
+                iqr = q3 - q1
+                for x in self.soil_moisture:
+                    if x < q1 - iqr * 1.5 or x > q3 + iqr * 1.5:
+                        self.soil_moisture.remove(x)
+                self.mean_soil = statistics.mean(self.soil_moisture)
+                self.std_soil = statistics.pstdev(self.soil_moisture)
+                
+            while self.std_temp > 0.8:
+                q1,_,q3 = statistics.quantiles(self.temperature)
+                iqr = q3 - q1
+                for x in self.temperature:
+                    if x < q1 - iqr * 1.5 or x > q3 + iqr * 1.5:
+                        self.temperature.remove(x)
+                self.mean_temp = statistics.mean(self.temperature)
+                self.std_temp = statistics.pstdev(self.temperature)
         except: 
             
             print("no change in data sensor")
