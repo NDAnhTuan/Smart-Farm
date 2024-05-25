@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Devices from "@screens/Devices";
 import Notifications from "@screens/Notifications";
 import Dashboard from "@screens/Dashboard";
+import Setting from "@screens/Setting";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,16 @@ const MyTabs = () => {
           tabBarLabel: "Thống kê",
           tabBarIcon: ({ color, size }) => (
             <Icon name="account" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Cài đặt"
+        component={Setting}
+        options={{
+          tabBarLabel:"Cài đặt",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="cog" color={color} size={size} />
           ),
         }}
       />
