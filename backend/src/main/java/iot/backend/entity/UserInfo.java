@@ -1,7 +1,5 @@
 package iot.backend.entity;
 
-import java.util.List;
-
 import jakarta.persistence.*;
 
 @Entity
