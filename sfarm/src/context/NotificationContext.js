@@ -5,20 +5,7 @@ import { createContext, useContext, useState } from "react";
 const NotificationContext = createContext();
 
 function NotificationProvider({ children }) {
-  const [notifications, setNotifications] = useState([
-    {
-      id: 0,
-      title: "Thông báo",
-      body: "Nhiệt độ ở Nhiệt độ 1 vượt mức cho phép",
-      status: "unread",
-    },
-    {
-      id: 1,
-      title: "Thông báo",
-      body: "Nhiệt độ ở Nhiệt độ 2 vượt mức cho phép",
-      status: "read",
-    },
-  ]);
+  const [notifications, setNotifications] = useState([]);
 
   const getDate = () => {
     const date = new Date();

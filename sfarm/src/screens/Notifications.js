@@ -30,15 +30,21 @@ const Notifications = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {notifications.map((noti) => (
-        <NotificationItem
-          key={noti.id}
-          id={noti.id}
-          title={noti.title}
-          body={noti.body}
-          status={noti.status}
-        />
-      ))}
+      {notifications.length !== 0 ? (
+        notifications.map((noti) => (
+          <NotificationItem
+            key={noti.id}
+            id={noti.id}
+            title={noti.title}
+            body={noti.body}
+            status={noti.status}
+          />
+        ))
+      ) : (
+        <View style={styles.nah}>
+          <Text>Hiện chưa có thông báo nào</Text>
+        </View>
+      )}
     </ScrollView>
   );
 };
@@ -51,6 +57,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 8,
     gap: 8,
+  },
+  nah: {
+    textAlign: "center",
   },
 });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { NotificationContext } from "@context/NotificationContext";
 import SensorItem from "@components/SensorItem";
 import { SensorsContext } from "@context/SensorsContext";
