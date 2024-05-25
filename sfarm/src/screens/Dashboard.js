@@ -1,10 +1,14 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
+import { SettingsContext } from "@context/SettingsContext";
 
 const Dashboard = () => {
+  const {limit} = useContext(SettingsContext);
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Dashboard!</Text>
+      <Text>Temp: {limit.temp}</Text>
+      <Text>Humid: {limit.humid}</Text>
+      <Text>Bright: {limit.bright}</Text>
     </View>
   );
 };

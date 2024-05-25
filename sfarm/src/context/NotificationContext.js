@@ -69,6 +69,7 @@ function NotificationProvider({ children }) {
         });
         console.log(data);
         setNotifications(data);
+        console.log(notifications);
       })
       .catch((err) => {
         console.log(err);

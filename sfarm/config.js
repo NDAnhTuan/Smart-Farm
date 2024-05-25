@@ -3,5 +3,4 @@ export const config = {
     password: "",
     appId: 21189,
     appToken: "g1xiqSfCTGaFvTPHF5yRAb",
-    temp: 30,
 }

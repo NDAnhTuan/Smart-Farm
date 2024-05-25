@@ -1,5 +1,12 @@
-import { View, Text, StyleSheet } from "react-native";
-import React, { useContext } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
+import React, { useContext, useState } from "react";
 import { NotificationContext } from "@context/NotificationContext";
 import NotificationItem from "@components/NotificationItem";
 
@@ -8,8 +15,21 @@ const Notifications = () => {
   const { notifications } = notificationData;
   console.log(notifications);
 
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {notifications.map((noti) => (
         <NotificationItem
           key={noti.id}
@@ -19,7 +39,7 @@ const Notifications = () => {
           status={noti.status}
         />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

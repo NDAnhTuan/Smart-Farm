@@ -1,20 +1,38 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import SettingItem from '@components/SettingItem';
-import { getSettingItem, pushsettingItem } from "@utils/SettingItemUtils";
+import React, { useContext, useState } from "react";
+import { View, Text, StyleSheet, TextInput } from "react-native";
+import { SettingsContext } from "@context/SettingsContext";
 
 const Setting = () => {
-    const [settingItem, setSettingItem] = useState(getSettingItem());
-
+  const { limit, setLimit } = useContext(SettingsContext);
+  console.log(limit);
+  
   return (
     <View style={styles.container}>
-        {settingItem.map((setting) => (
-            <SettingItem
-                type = {setting.type}
-                name = {setting.name}
-                value = {setting.value}
-             />
-        ))}
+      <Text style={styles.label}>Nhiệt độ</Text>
+      <TextInput
+        style={styles.input}
+        keyboardType="numeric"
+        value={"" + limit.temp}
+        onChangeText={(value) => setLimit((prev) => ({ ...prev, temp: value }))}
+      />
+      <Text style={styles.label}>Độ ẩm</Text>
+      <TextInput
+        style={styles.input}
+        keyboardType="numeric"
+        value={"" + limit.humid}
+        onChangeText={(value) =>
+          setLimit((prev) => ({ ...prev, humid: value }))
+        }
+      />
+      <Text style={styles.label}>Ánh sáng</Text>
+      <TextInput
+        style={styles.input}
+        keyboardType="numeric"
+        value={"" + limit.bright}
+        onChangeText={(value) =>
+          setLimit((prev) => ({ ...prev, bright: value }))
+        }
+      />
     </View>
   );
 };
@@ -24,17 +42,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-//   title: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     marginBottom: 20,
-//   },
-//   setting: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginBottom: 10,
-//   },
-  
+  label: {
+    fontWeight: "500",
+  },
+  input: {
+    padding: 8,
+    paddingLeft: 16,
+    marginVertical: 8,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 8,
+  },
 });
 
 export default Setting;

@@ -6,20 +6,23 @@ import { config } from "@/config";
 import { NotificationProvider } from "@context/NotificationContext";
 import { DevicesProvider } from "@context/DevicesContext";
 import { SensorsProvider } from "@context/SensorsContext";
+import { SettingsProvider } from "@context/SettingsContext";
 
 export default function App() {
   registerNNPushToken(config.appId, config.appToken);
 
   return (
-    <NavigationContainer>
+    <SettingsProvider>
       <NotificationProvider>
-      <DevicesProvider>
+        <DevicesProvider>
           <SensorsProvider>
-            <MyTabs />
+            <NavigationContainer>
+              <MyTabs />
+            </NavigationContainer>
           </SensorsProvider>
         </DevicesProvider>
       </NotificationProvider>
-    </NavigationContainer>
+    </SettingsProvider>
   );
 }
 
