@@ -7,7 +7,6 @@ const NotificationItem = ({ id, title, body, status }) => {
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{body}</Text>
-      <Button title="Đánh dấu đã xem"/>
     </View>
   );
 };
@@ -22,8 +21,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 4,
     backgroundColor: "white",
-    shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3,
@@ -32,9 +31,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
   },
-  body: {
-
-  }
+  body: {},
 });
 
 export default NotificationItem;

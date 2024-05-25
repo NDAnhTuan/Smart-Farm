@@ -1,14 +1,13 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
-import { getNotifications, pushNotification } from "@utils/NotificationUtils";
+import React, { useContext } from "react";
+import { NotificationContext } from "@context/NotificationContext";
 import NotificationItem from "@components/NotificationItem";
-import { Button } from "react-native";
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState(getNotifications());
-  useEffect(() => {
-    setNotifications(getNotifications());
-  }, [])
+  const notificationData = useContext(NotificationContext);
+  const { notifications } = notificationData;
+  console.log(notifications);
+
   return (
     <View style={styles.container}>
       {notifications.map((noti) => (
