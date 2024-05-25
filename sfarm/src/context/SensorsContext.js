@@ -36,6 +36,7 @@ const SensorsProvider = ({ children }) => {
   const notificationData = useContext(NotificationContext);
   const { pushNotification } = notificationData;
   const { limit } = useContext(SettingsContext);
+  console.log("limit in sensot context 1",limit);
 
   useEffect(() => {
     // Fetch Adafruit API to get initial values
@@ -87,6 +88,7 @@ const SensorsProvider = ({ children }) => {
       prev.map((device) => {
         if (device.topic === topic) {
           device.status = value;
+          console.log("limit in sensot context 2",limit);
           if (topic.includes("temp") && value > limit.temp) {
             pushNotification({
               title: "Cảnh báo!",
