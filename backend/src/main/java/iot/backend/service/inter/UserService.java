@@ -13,5 +13,5 @@ public interface UserService {
     public Optional<UserInfo> login(UserInfo user);
 
     public Optional<UserInfo> findUser(Integer user_id);
-    
+
 }
