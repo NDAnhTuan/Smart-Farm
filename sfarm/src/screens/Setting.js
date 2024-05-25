@@ -10,9 +10,9 @@ const Setting = () => {
     <View style={styles.container}>
         {settingItem.map((setting) => (
             <SettingItem
-                type = {setting.Type}
-                name = {setting.Name}
-                value = {setting.Value}
+                type = {setting.type}
+                name = {setting.name}
+                value = {setting.value}
              />
         ))}
     </View>

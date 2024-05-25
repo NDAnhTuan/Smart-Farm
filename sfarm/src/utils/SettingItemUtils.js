@@ -3,25 +3,22 @@ import { config } from "@/config";
 let settingItem = [
   {
     id: 0,
-    Type: "Thông báo",
-    Name: "Nhiệt độ",
-    Value: 2,
+
+    name: "Nhiệt độ",
+    value: 2,
   },
   {
     id: 1,
-    title: "Thông báo",
-    Name: "Độ ẩm",
-    Value: 3,
+    name: "Độ ẩm",
+    value: 3,
   },
 ];
 let id = 2;
 
-export function pushsettingItem({ name, value }) {
+export function pushSettingItem({ name, value }) {
   const message = {
-    appId: config.appId,
-    appToken: config.appToken,
-    Name: name,
-    Value: value,
+    name: name,
+    value: value,
   };
 //   fetch("https://app.nativenotify.com/api/notification", {
 //     method: "POST",
@@ -33,8 +30,8 @@ export function pushsettingItem({ name, value }) {
 //     console.log(err);
 //   });
 settingItem.forEach((item) => {
-    if (item.Name === name) {
-      item.Value = value;
+    if (item.name === name) {
+      item.value = value;
     }
   }
 )
