@@ -50,6 +50,7 @@ class Data:
 
     def calculate(self):
         try:
+            self.is_data_valid = True
             self.mean_temp = statistics.mean(self.temperature)
             self.mean_bright = statistics.mean(self.brightness)
             self.mean_soil = statistics.mean(self.soil_moisture)
@@ -125,8 +126,9 @@ class Data:
                 
             self.mean_temp = statistics.mean(self.temperature)
 
-        except: 
             
+        except: 
+            self.is_data_valid = False
             print("no change in data sensor")
             pass
 
