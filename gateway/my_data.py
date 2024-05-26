@@ -132,7 +132,7 @@ class Data:
             q1,_,q3 = statistics.quantiles(self.soil_moisture)
             iqr = q3 - q1
 
-            while self.std_soil > 10 and (self.soil_moisture[0] < q1 - iqr * 1.5 or self.soil_moisture[-1] > q3 + iqr * 1.5):
+            while self.std_soil > 0.2 and (self.soil_moisture[0] < q1 - iqr * 1.5 or self.soil_moisture[-1] > q3 + iqr * 1.5):
                 if q1 - iqr * 1.5 - self.soil_moisture[0] < self.soil_moisture[-1] - q3 + iqr * 1.5:
                     self.soil_moisture.pop(-1)
                 else:
@@ -164,7 +164,7 @@ class Data:
             q1,_,q3 = statistics.quantiles(self.temperature)
             iqr = q3 - q1
 
-            while self.std_temp > 10 and (self.temperature[0] < q1 - iqr * 1.5 or self.temperature[-1] > q3 + iqr * 1.5):
+            while self.std_temp > 0.8 and (self.temperature[0] < q1 - iqr * 1.5 or self.temperature[-1] > q3 + iqr * 1.5):
                 if q1 - iqr * 1.5 - self.temperature[0] < self.temperature[-1] - q3 + iqr * 1.5:
                     self.temperature.pop(-1)
                 else:
