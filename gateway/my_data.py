@@ -69,7 +69,7 @@ class Data:
             iqr = q3 - q1
 
             while self.std_bright > 5 and (self.brightness[0] < q1 - iqr * 1.5 or self.brightness[-1] > q3 + iqr * 1.5):
-                if q1 - iqr * 1.5 - self.brightness[0] < self.brightness[-1] - q3 + iqr * 1.5:
+                if ((q1 - iqr * 1.5) - self.brightness[0]) < (self.brightness[-1] - (q3 + iqr * 1.5)):
                     self.brightness.pop(-1)
                 else:
                     self.brightness.pop(0)
@@ -80,28 +80,11 @@ class Data:
                 
             self.mean_bright = statistics.mean(self.brightness)
 
-            # while self.std_bright > 5:
-            #     q1,_,q3 = statistics.quantiles(self.brightness)
-            #     iqr = q3 - q1
-            #     size = len(self.brightness)
-            #     while size > 0 and (self.brightness[0] < q1 - iqr * 1.5 or self.brightness[size - 1] > q3 + iqr * 1.5):
-            #         if self.brightness[0] < q1 - iqr * 1.5:
-            #             self.brightness.pop(0)
-            #             size -= 1
-            #         if self.brightness[size - 1] > q3 + iqr * 1.5:
-            #             self.brightness.pop(size - 1)
-            #             size -= 1
-            #     # for x in self.brightness:
-            #     #     if x 
-            #     #         self.brightness.remove(x)
-            #     self.mean_bright = statistics.mean(self.brightness)
-            #     self.std_bright = statistics.pstdev(self.brightness)
-
             q1,_,q3 = statistics.quantiles(self.humidity)
             iqr = q3 - q1
 
             while self.std_humid > 10 and (self.humidity[0] < q1 - iqr * 1.5 or self.humidity[-1] > q3 + iqr * 1.5):
-                if q1 - iqr * 1.5 - self.humidity[0] < self.humidity[-1] - q3 + iqr * 1.5:
+                if ((q1 - iqr * 1.5) - self.humidity[0]) < (self.humidity[-1] - (q3 + iqr * 1.5)):
                     self.humidity.pop(-1)
                 else:
                     self.humidity.pop(0)
@@ -111,29 +94,12 @@ class Data:
                 iqr = q3 - q1
                 
             self.mean_humid = statistics.mean(self.humidity)
-            
-            # while self.std_humid > 10:
-            #     q1,_,q3 = statistics.quantiles(self.humidity)
-            #     iqr = q3 - q1
-            #     size = len(self.humidity)
-            #     while size > 0 and (self.humidity[0] < q1 - iqr * 1.5 or self.humidity[size - 1] > q3 + iqr * 1.5):
-            #         if self.humidity[0] < q1 - iqr * 1.5:
-            #             self.humidity.pop(0)
-            #             size -= 1
-            #         if self.humidity[size - 1] > q3 + iqr * 1.5:
-            #             self.humidity.pop(size - 1)
-            #             size -= 1
-            #     # for x in self.humidity:
-            #     #     if x < q1 - iqr * 1.5 or x > q3 + iqr * 1.5:
-            #     #         self.humidity.remove(x)
-            #     self.mean_humid = statistics.mean(self.humidity)
-            #     self.std_humid = statistics.pstdev(self.humidity)
 
             q1,_,q3 = statistics.quantiles(self.soil_moisture)
             iqr = q3 - q1
 
             while self.std_soil > 0.2 and (self.soil_moisture[0] < q1 - iqr * 1.5 or self.soil_moisture[-1] > q3 + iqr * 1.5):
-                if q1 - iqr * 1.5 - self.soil_moisture[0] < self.soil_moisture[-1] - q3 + iqr * 1.5:
+                if ((q1 - iqr * 1.5) - self.soil_moisture[0]) < (self.soil_moisture[-1] - (q3 + iqr * 1.5)):
                     self.soil_moisture.pop(-1)
                 else:
                     self.soil_moisture.pop(0)
@@ -143,29 +109,12 @@ class Data:
                 iqr = q3 - q1
                 
             self.mean_soil = statistics.mean(self.soil_moisture)
-                
-            # while self.std_soil > 0.2:
-            #     q1,_,q3 = statistics.quantiles(self.soil_moisture)
-            #     iqr = q3 - q1
-            #     size = len(self.soil_moisture)
-            #     while size > 0 and (self.soil_moisture[0] < q1 - iqr * 1.5 or self.soil_moisture[size - 1] > q3 + iqr * 1.5):
-            #         if self.soil_moisture[0] < q1 - iqr * 1.5:
-            #             self.soil_moisture.pop(0)
-            #             size -= 1
-            #         if self.soil_moisture[size - 1] > q3 + iqr * 1.5:
-            #             self.soil_moisture.pop(size - 1)
-            #             size -= 1
-            #     # for x in self.soil_moisture:
-            #     #     if x < q1 - iqr * 1.5 or x > q3 + iqr * 1.5:
-            #     #         self.soil_moisture.remove(x)
-            #     self.mean_soil = statistics.mean(self.soil_moisture)
-            #     self.std_soil = statistics.pstdev(self.soil_moisture)
 
             q1,_,q3 = statistics.quantiles(self.temperature)
             iqr = q3 - q1
 
             while self.std_temp > 0.8 and (self.temperature[0] < q1 - iqr * 1.5 or self.temperature[-1] > q3 + iqr * 1.5):
-                if q1 - iqr * 1.5 - self.temperature[0] < self.temperature[-1] - q3 + iqr * 1.5:
+                if ((q1 - iqr * 1.5) - self.temperature[0]) < (self.temperature[-1] - (q3 + iqr * 1.5)):
                     self.temperature.pop(-1)
                 else:
                     self.temperature.pop(0)
@@ -175,25 +124,10 @@ class Data:
                 iqr = q3 - q1
                 
             self.mean_temp = statistics.mean(self.temperature)
-                
-            # while self.std_temp > 0.8:
-            #     q1,_,q3 = statistics.quantiles(self.temperature)
-            #     iqr = q3 - q1
-            #     size = len(self.temperature)
-            #     while size > 0 and (self.temperature[0] < q1 - iqr * 1.5 or self.temperature[size - 1] > q3 + iqr * 1.5):
-            #         if self.temperature[0] < q1 - iqr * 1.5:
-            #             self.temperature.pop(0)
-            #             size -= 1
-            #         if self.temperature[size - 1] > q3 + iqr * 1.5:
-            #             self.temperature.pop(size - 1)
-            #             size -= 1
-            #     # for x in self.temperature:
-            #     #     if x < q1 - iqr * 1.5 or x > q3 + iqr * 1.5:
-            #     #         self.temperature.remove(x)
-            #     self.mean_temp = statistics.mean(self.temperature)
-            #     self.std_temp = statistics.pstdev(self.temperature)
 
         except: 
             
             print("no change in data sensor")
             pass
+
+my_data = Data()
