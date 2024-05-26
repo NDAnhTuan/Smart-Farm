@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 import init from "react_native_mqtt";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -37,6 +37,9 @@ const SensorsProvider = ({ children }) => {
   const { pushNotification } = notificationData;
   const { limit } = useContext(SettingsContext);
   console.log("limit in sensot context 1",limit);
+
+  const limitRef = useRef(limit);
+  limitRef.current = limit;
 
   useEffect(() => {
     // Fetch Adafruit API to get initial values
@@ -88,18 +91,17 @@ const SensorsProvider = ({ children }) => {
       prev.map((device) => {
         if (device.topic === topic) {
           device.status = value;
-          console.log("limit in sensot context 2",limit);
-          if (topic.includes("temp") && value > limit.temp) {
+          if (topic.includes("temp") && value > limitRef.current.temp) {
             pushNotification({
               title: "Cảnh báo!",
               body: `Nhiệt độ vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
             });
-          } else if (topic.includes("humid") && value > limit.humid) {
+          } else if (topic.includes("humid") && value > limitRef.current.humid) {
             pushNotification({
               title: "Cảnh báo!",
               body: `Độ ẩm vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
             });
-          } else if (topic.includes("bright") && value > limit.bright) {
+          } else if (topic.includes("bright") && value > limitRef.current.bright) {
             pushNotification({
               title: "Cảnh báo!",
               body: `Ánh sáng vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
