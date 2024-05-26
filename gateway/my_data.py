@@ -151,7 +151,7 @@ my_data = Data()
 
 # CMD = ["TEMP", "HUMID", "SOIL", "BRIGHT", "LED", "FAN", "PUMP", "control"]
 # for test
-feed_list = ["TEMP", "TEMP", "TEMP","HUMID", "HUMID", "HUMID","TEMP", "HUMID", "TEMP", "HUMID", "SOIL", "BRIGHT", "TEMP", "TEMP","HUMID", "HUMID", "HUMID","TEMP", "HUMID", "TEMP", "HUMID", "SOIL", "BRIGHT"]
-value_list = [0,     29.5,     42,     82,      90,     91,    28,      66,     28,      88,     70,     65,        26,   29.5,     42,     82,        90,    91,    30,     150,       35,     88,        70]
-my_data.get_all_data(feed_list, value_list)
-my_data.calculate()
+# feed_list = ["TEMP", "TEMP", "TEMP","HUMID", "HUMID", "HUMID","TEMP", "HUMID", "TEMP", "HUMID", "SOIL", "BRIGHT", "TEMP", "TEMP","HUMID", "HUMID", "HUMID","TEMP", "HUMID", "TEMP", "HUMID", "SOIL", "BRIGHT"]
+# value_list = [0,     29.5,     42,     82,      90,     91,    28,      66,     28,      88,     70,     65,        26,   29.5,     42,     82,        90,    91,    30,     150,       35,     88,        70]
+# my_data.get_all_data(feed_list, value_list)
+# my_data.calculate()
