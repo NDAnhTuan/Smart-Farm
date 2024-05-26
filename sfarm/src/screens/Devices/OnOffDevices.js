@@ -15,6 +15,7 @@ const OnOffDevices = () => {
             name={device.name}
             status={device.status}
             client={client}
+            
           />
         ))}
       </View>

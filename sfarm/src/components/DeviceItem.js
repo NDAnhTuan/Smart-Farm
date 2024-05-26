@@ -12,10 +12,10 @@ const DeviceItem = ({ device_key, name, status, onStatusChange, client }) => {
         maximumTrackTintColor="#d3d3d3"
         minimumTrackTintColor="#1fb28a"
         thumbTintColor="#ffffff"
-        value={parseInt(isSwitchOn)}
+        value={parseInt(status)}
         minimumValue={0}
-        maximumValue={100}
-        step={25}
+        maximumValue={3}
+        step={1}
 
         onSlidingComplete={handleStatusChange}
       />);
@@ -34,9 +34,9 @@ const DeviceItem = ({ device_key, name, status, onStatusChange, client }) => {
     urlimg =  "https://media.istockphoto.com/id/1216943362/vi/vec-to/bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-vector-b%C3%B3ng-%C4%91%C3%A8n-b%C3%B3ng-%C4%91%C3%A8n-v%C3%A0ng-l%C3%A0-bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-c%E1%BB%A7a-s%E1%BB%B1-s%C3%A1ng-t%E1%BA%A1o-v%C3%A0-%C4%91%E1%BB%95i-m%E1%BB%9Bi-c%C3%B4-l%E1%BA%ADp.jpg?s=612x612&w=0&k=20&c=AO3KMiuDrQ3sDZxEEpojwzw0kdCNsZIUpcDDAoK3Q_g="
   }
   const handleSwitchToggle = (e) => {
-    let newStatus = isSwitchOn === "0" ? "1" : "0";
+    let newStatus = status === "0" ? "1" : "0";
     if (device_key === "fan") {
-      newStatus = isSwitchOn === "0" ? "25" : "0";
+      newStatus = status === "0" ? "1" : "0";
     }
     client.publish(`${config.userName}/feeds/${device_key}`, newStatus);
     setIsSwitchOn(newStatus);
@@ -63,11 +63,11 @@ const DeviceItem = ({ device_key, name, status, onStatusChange, client }) => {
           <View>
             <Switch
               trackColor={{ false: "#767577", true: "#04dd28" }}
-              thumbColor={isSwitchOn ? "#f5dd4b" : "#f4f3f4"}
+              thumbColor={status ? "#f5dd4b" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               // onValueChange={toggleSwitch}
               // value={status === 'Bật' ? true : false}
-              value={isSwitchOn !== "0"}
+              value={status !== "0"}
               onValueChange={handleSwitchToggle}
             />
           </View>
