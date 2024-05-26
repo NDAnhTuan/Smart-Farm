@@ -19,12 +19,14 @@ def fsm_query(my_serial: UART):
     global st_query, timer_query, timer_wait_query, received, cnt_query
     # print(st_query)
     if st_query == ST_IDLE:
+        #print("in query idle", timer_query)
         timer_query -= 1
         if timer_query <= 0:
             for id in list(received.keys()):
                 received[id] = False
             st_query = ST_SENDING
     elif st_query == ST_SENDING:
+        # print("in query sending")
         if received["LED"] == False:
             my_serial.query("LED")
         if received["FAN"] == False:
@@ -38,6 +40,7 @@ def fsm_query(my_serial: UART):
             timer_query = 1200
             st_query = ST_IDLE
     elif st_query == ST_WAITING:
+        # print("in query waiting")
         timer_wait_query -= 1
         if timer_wait_query <= 0:
             cnt_query += 1
@@ -64,11 +67,12 @@ cnt_control = 0
 
 def fsm_control(my_server, my_serial: UART):
     global st_control, timer_wait_control, cnt_control
-
     if st_control == ST_IDLE:
+        # print("in control IDLE")
         if my_server.received == True:
             st_control = ST_SENDING
     elif st_control == ST_SENDING:
+        # print("in control Sending")
         my_serial.check_connection = False
         my_serial.send_data(my_server.buffer)
         if my_serial.check_connection == True:
@@ -79,6 +83,7 @@ def fsm_control(my_server, my_serial: UART):
             timer_wait_control = 150
             st_control = ST_WAITING
     elif st_control == ST_WAITING:
+        # print("in control waiting")
         timer_wait_control -= 1
         if my_serial.check_connection == True:
             cnt_control = 0

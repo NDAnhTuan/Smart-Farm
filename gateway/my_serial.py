@@ -88,6 +88,8 @@ class UART:
         mess = f"!{cmd}:3#".encode()
         self.ser.write(mess)
 
+
+my_serial = UART()
 # # for testing
 # temp = UART()
 # while True:
