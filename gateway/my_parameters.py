@@ -2,4 +2,4 @@
 LIST_OF_FEEDS = ["fan", "hose", "light", "sensors.temp1", "sensors.bright1", "sensors.humid1", "sensors.soil1"]
 HOST = "io.adafruit.com"
 USER = "tdttvd"
-PASSWORD = "aio_ECkl11U2zTrSdJaHcI8aFgifPnmX"
+PASSWORD = ""

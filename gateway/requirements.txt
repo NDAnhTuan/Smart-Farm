@@ -2,3 +2,6 @@ adafruit-io==2.7.1
 paho-mqtt==1.6.1
 numpy==1.26.1
 pyserial==3.5
+pandas
+pmdarima == 2.0.4
+statsmodels
