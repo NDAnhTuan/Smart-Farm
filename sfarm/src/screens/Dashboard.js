@@ -41,25 +41,6 @@ const Dashboard = () => {
     }
   }, [value]);
 
-  // const rawData = [
-  //   ["2024-05-26T11:40:36Z", "23.0"],
-  //   ["2024-05-26T13:37:17Z", "0.0"],
-  //   ["2024-05-26T14:01:16Z", "42.0"],
-  //   ["2024-05-26T14:46:33Z", "42.0"],
-  //   ["2024-05-27T04:10:13Z", "28.42"],
-  //   ["2024-05-27T04:10:49Z", "28.49"],
-  //   ["2024-05-27T04:11:49Z", "28.4"],
-  //   ["2024-05-27T04:12:25Z", "28.46"],
-  //   ["2024-05-27T04:13:01Z", "28.38"],
-  //   ["2024-05-27T04:13:37Z", "28.25"],
-  //   ["2024-05-27T04:14:37Z", "28.04"],
-  //   ["2024-05-27T04:15:30Z", "28.1"],
-  //   ["2024-05-27T04:16:06Z", "27.96"],
-  //   ["2024-05-27T04:17:14Z", "27.99"],
-  //   ["2024-05-27T04:17:50Z", "28.01"],
-  //   ["2024-05-27T04:18:25Z", "28.1"],
-  // ];
-
   // State to manage the current view
   const [timeFrame, setTimeFrame] = useState("24h");
 
@@ -98,6 +79,35 @@ const Dashboard = () => {
     ],
   };
 
+  const valueData = filteredData.map((item) => Number(item[1]));
+
+  const asc = (arr) => arr.sort((a, b) => a - b);
+  const sortedValue = asc(valueData);
+
+  const min = sortedValue.at(0);
+  const max = sortedValue.at(-1);
+
+  const sum = (arr) => arr.reduce((acc, item) => acc + Number(item), 0);
+
+  const quantile = (arr, q) => {
+    const sorted = asc(arr);
+    const pos = (arr.length - 1) * q;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    if (sorted[base + 1] !== undefined) {
+      return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+    } else {
+      return sorted[base];
+    }
+  };
+
+  const mean = sum(sortedValue) / sortedValue.length;
+  const q1 = quantile(valueData, 0.25);
+  const med = quantile(valueData, 0.5);
+  const q3 = quantile(valueData, 0.75);
+
+  const roundValue = (value) => Math.round(value * 100) / 100;
+
   return (
     <View style={styles.container}>
       <Dropdown
@@ -132,29 +142,39 @@ const Dashboard = () => {
         <Button title="1 tháng" onPress={() => setTimeFrame("month")} />
       </View>
       {filteredData.length > 0 ? (
-        <LineChart
-          data={chartData}
-          width={Dimensions.get("window").width * 0.9} // from react-native
-          height={220}
-          chartConfig={{
-            backgroundColor: "#e26a00",
-            backgroundGradientFrom: "#fb8c00",
-            backgroundGradientTo: "#ffa726",
-            decimalPlaces: 0, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
-            propsForDots: {
-              r: "2",
-              strokeWidth: "1",
-              stroke: "#ffa726",
-            },
-          }}
-          bezier
-          style={styles.graph}
-        />
+        <>
+          <LineChart
+            data={chartData}
+            width={Dimensions.get("window").width * 0.9} // from react-native
+            height={220}
+            chartConfig={{
+              backgroundColor: "#e26a00",
+              backgroundGradientFrom: "#fb8c00",
+              backgroundGradientTo: "#ffa726",
+              decimalPlaces: 0, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForDots: {
+                r: "2",
+                strokeWidth: "1",
+                stroke: "#ffa726",
+              },
+            }}
+            bezier
+            style={styles.graph}
+          />
+          <View style={styles.stats}>
+            <Text style={styles.statsline}>Min: {roundValue(min)}</Text>
+            <Text style={styles.statsline}>Max: {roundValue(max)}</Text>
+            <Text style={styles.statsline}>Mean: {roundValue(mean)}</Text>
+            <Text style={styles.statsline}>Q1: {roundValue(q1)}</Text>
+            <Text style={styles.statsline}>Median: {roundValue(med)}</Text>
+            <Text style={styles.statsline}>Q3: {roundValue(q3)}</Text>
+          </View>
+        </>
       ) : (
         <></>
       )}
@@ -202,6 +222,16 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+  },
+  stats: {
+    marginTop: 8,
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start",
+  },
+  statsline: {
+    fontWeight: "500",
+    lineHeight: 20,
   },
 });
 
