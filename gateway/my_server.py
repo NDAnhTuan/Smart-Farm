@@ -54,7 +54,8 @@ class Server:
         # decode payload from bytes to string
         data = data.decode('utf-8')
         print(f'Feed {msg.topic} received new value: {data}')
-        if msg.topic.split('/')[2] in LIST_OF_FEEDS[0:2]:
+        if msg.topic.split('/')[2] in LIST_OF_FEEDS[0:3]:
+            print("in message")
             if self.self_publish == 0:
                 if "fan" in msg.topic:
                     cmd = data

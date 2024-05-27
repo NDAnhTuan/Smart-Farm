@@ -1,6 +1,7 @@
 import statistics
 from my_serial import CMD
 from my_fsm import received, st_query, ST_IDLE
+from my_ai import *
 ST_GETTING = 0
 ST_CAL_AND_SENDING = 1
 
@@ -39,12 +40,16 @@ class Data:
         global received, st_query, ST_IDLE
         if cmd == CMD[0]:
             self.temperature.append(value)
+            temperature_model.verification(value)
         elif cmd == CMD[1]:
             self.humidity.append(value)
+            humidity_model.verification(value)
         elif cmd == CMD[2]:
             self.soil_moisture.append(value)
+            soil_model.verification(value)
         elif cmd == CMD[3]:
             self.brightness.append(value)
+            brightness_model.verification(value)
         elif cmd in received.keys():
             self.change_in_device[cmd] = value
             received[cmd] = True

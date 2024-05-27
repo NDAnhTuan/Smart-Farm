@@ -23,7 +23,7 @@ class UART:
     def __init__(self) -> None:
         #self.ser =serial.Serial(port=self.getPort(), baudrate=115200)
         try:
-            self.ser = serial.Serial(port=COM5, baudrate=115200)
+            self.ser = serial.Serial(port=self.getPort(), baudrate=115200)
             print(self.ser)
             if self.ser == NONE:
                 self.port_error = True
@@ -40,7 +40,7 @@ class UART:
         for i in range(0, N):
             port = ports[i]
             strPort = str(port)
-            #print(strPort)
+            print(strPort)
             if "USB-SERIAL CH340" in strPort:
                 splitPort = strPort.split(" ")
                 commPort = (splitPort[0])
@@ -90,6 +90,7 @@ class UART:
 
 
 my_serial = UART()
+my_serial.getPort()
 # # for testing
 # temp = UART()
 # while True:
