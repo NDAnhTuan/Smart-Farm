@@ -20,9 +20,9 @@ public class Sensor {
     @JsonIgnore
     private Device device;
 
-    private Double minVal;
+    // private Double minVal;
 
-    private Double maxVal;
+    // private Double maxVal;
 
     private Double upperAlert;
 
@@ -44,21 +44,21 @@ public class Sensor {
         this.device = device;
     }
 
-    public Double getMinVal() {
-        return minVal;
-    }
+    // public Double getMinVal() {
+    //     return minVal;
+    // }
 
-    public void setMinVal(Double minVal) {
-        this.minVal = minVal;
-    }
+    // public void setMinVal(Double minVal) {
+    //     this.minVal = minVal;
+    // }
 
-    public Double getMaxVal() {
-        return maxVal;
-    }
+    // public Double getMaxVal() {
+    //     return maxVal;
+    // }
 
-    public void setMaxVal(Double maxVal) {
-        this.maxVal = maxVal;
-    }
+    // public void setMaxVal(Double maxVal) {
+    //     this.maxVal = maxVal;
+    // }
 
     public Double getUpperAlert() {
         return upperAlert;
