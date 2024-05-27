@@ -12,17 +12,17 @@ export default function App() {
   registerNNPushToken(config.appId, config.appToken);
 
   return (
-    <SettingsProvider>
-      <NotificationProvider>
-        <DevicesProvider>
-          <SensorsProvider>
-            <NavigationContainer>
-              <MyTabs />
-            </NavigationContainer>
-          </SensorsProvider>
-        </DevicesProvider>
-      </NotificationProvider>
-    </SettingsProvider>
+      <SettingsProvider>
+        <NotificationProvider>
+          <DevicesProvider>
+            <SensorsProvider>
+              <NavigationContainer>
+                <MyTabs />
+              </NavigationContainer>
+            </SensorsProvider>
+          </DevicesProvider>
+        </NotificationProvider>
+      </SettingsProvider>
   );
 }
 
