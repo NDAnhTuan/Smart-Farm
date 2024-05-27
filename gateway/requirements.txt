@@ -5,3 +5,4 @@ pyserial==3.5
 pandas
 pmdarima == 2.0.4
 statsmodels
+matplotlib == 3.9.0
