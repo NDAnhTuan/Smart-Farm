@@ -29,15 +29,22 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (value) {
-      axios
-        .get(
-          `https://io.adafruit.com/api/v2/tdttvd/feeds/${value}/data/chart?hours=720`,
-          {
-            headers: { "X-AIO-Key": config.password },
-          }
-        )
-        .then((response) => setRawData(response.data.data))
-        .catch((err) => console.error(err));
+      let inter = setInterval(() => {
+        axios
+          .get(
+            `https://io.adafruit.com/api/v2/tdttvd/feeds/${value}/data/chart?hours=720`,
+            {
+              headers: { "X-AIO-Key": config.password },
+            }
+          )
+          .then((response) => setRawData(response.data.data))
+          .catch((err) => console.error(err));
+      }, 1500);
+      return () => {
+        if (inter) {
+          clearInterval(inter);
+        }
+      };
     }
   }, [value]);
 

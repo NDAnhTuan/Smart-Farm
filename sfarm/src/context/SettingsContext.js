@@ -1,16 +1,17 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import Constants from "expo-constants";
 
 const SettingsContext = createContext();
 
 const SettingsProvider = ({ children }) => {
-  const [limit, setLimit] = useState({
-    temp: 20,
-    humid: 10,
-    bright: 30,
-  });
+  const [limit, setLimit] = useState([]);
+
+  const overLimit = (value, sensor) => {
+    return value >= sensor.upper || value <= sensor.lower;
+  };
 
   return (
-    <SettingsContext.Provider value={{ limit, setLimit }}>
+    <SettingsContext.Provider value={{ limit, setLimit, overLimit }}>
       {children}
     </SettingsContext.Provider>
   );

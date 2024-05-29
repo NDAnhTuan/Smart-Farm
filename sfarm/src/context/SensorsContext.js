@@ -35,8 +35,8 @@ const SensorsProvider = ({ children }) => {
   const [devices, setDevices] = useState([]);
   const notificationData = useContext(NotificationContext);
   const { pushNotification } = notificationData;
-  const { limit } = useContext(SettingsContext);
-  console.log("limit in sensot context 1",limit);
+  const { limit, overLimit } = useContext(SettingsContext);
+  console.log("limit in sensot context 1", limit);
 
   const limitRef = useRef(limit);
   limitRef.current = limit;
@@ -91,20 +91,30 @@ const SensorsProvider = ({ children }) => {
       prev.map((device) => {
         if (device.topic === topic) {
           device.status = value;
-          if (topic.includes("temp") && value > limitRef.current.temp) {
+          console.log(limitRef.current);
+          const sensor = limitRef.current.find(
+            (s) => s.key === topic.split("/").at(-1)
+          );
+          console.log(sensor);
+          if (topic.includes("temp") && overLimit(value, sensor)) {
             pushNotification({
               title: "Cảnh báo!",
               body: `Nhiệt độ vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
             });
-          } else if (topic.includes("humid") && value > limitRef.current.humid) {
+          } else if (topic.includes("humid") && overLimit(value, sensor)) {
             pushNotification({
               title: "Cảnh báo!",
               body: `Độ ẩm vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
             });
-          } else if (topic.includes("bright") && value > limitRef.current.bright) {
+          } else if (topic.includes("bright") && overLimit(value, sensor)) {
             pushNotification({
               title: "Cảnh báo!",
               body: `Ánh sáng vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
+            });
+          } else if (topic.includes("soil") && overLimit(value, sensor)) {
+            pushNotification({
+              title: "Cảnh báo!",
+              body: `Độ ẩm đất vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
             });
           }
         }

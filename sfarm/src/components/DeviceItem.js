@@ -48,7 +48,7 @@ const DeviceItem = ({ device_key, name, status, onStatusChange, client }) => {
   };
 
   return (
-    <View style={styles.deviceItem}>
+    <View style={[styles.deviceItem, styles.shadowProp]}>
       <Image
         source={{
           uri: urlimg,
@@ -119,6 +119,13 @@ const styles = StyleSheet.create({
   },
   deviceLocation: {
     fontSize: 14,
+  },
+  shadowProp: {
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
 });
 

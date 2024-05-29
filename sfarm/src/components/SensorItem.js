@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
-import {TempImg, HumidImg, BrightImg} from "@assets/img/index";
+import {TempImg, HumidImg, BrightImg, SoilImg} from "@assets/img/index";
 
 const tempImg = Image.resolveAssetSource(TempImg).uri;
 const humidImg = Image.resolveAssetSource(HumidImg).uri;
 const brightImg = Image.resolveAssetSource(BrightImg).uri;
+const soilImg = Image.resolveAssetSource(SoilImg).uri;
 
 const SensorItem = ({ device_key, name, status }) => {
   const typ = device_key.split('.')[1][0];
@@ -15,8 +16,11 @@ const SensorItem = ({ device_key, name, status }) => {
     case 'h':
       img = humidImg;
       break;
-    default:
+    case 'b':
       img = brightImg;
+      break;
+    default:
+      img = soilImg;
       break;
   }
   return (
