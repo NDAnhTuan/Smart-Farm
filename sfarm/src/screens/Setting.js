@@ -7,18 +7,18 @@ const Setting = () => {
   const { limit, setLimit } = useContext(SettingsContext);
   const { devices } = useContext(SensorsContext);
 
-  useEffect(() => {
-    let res = [];
-    devices.forEach((item) => {
-      res.push({
-        key: item.key,
-        name: item.name,
-        lower: 0,
-        upper: 100,
-      });
-    });
-    setLimit(res);
-  }, []);
+  // useEffect(() => {
+  //   let res = [];
+  //   devices.forEach((item) => {
+  //     res.push({
+  //       key: item.key,
+  //       name: item.name,
+  //       lower: 0,
+  //       upper: 100,
+  //     });
+  //   });
+  //   setLimit(res);
+  // }, []);
 
   console.log(limit);
 

@@ -35,7 +35,7 @@ const SensorsProvider = ({ children }) => {
   const [devices, setDevices] = useState([]);
   const notificationData = useContext(NotificationContext);
   const { pushNotification } = notificationData;
-  const { limit, overLimit } = useContext(SettingsContext);
+  const { limit, setLimit, overLimit } = useContext(SettingsContext);
   console.log("limit in sensot context 1", limit);
 
   const limitRef = useRef(limit);
@@ -46,7 +46,14 @@ const SensorsProvider = ({ children }) => {
     fetch(`https://io.adafruit.com/api/v2/tdttvd/groups/sensors/feeds`)
       .then((response) => response.json())
       .then((json) => {
+        let res = [];
         data = json.map((device) => {
+          res.push({
+            key: device.key,
+            name: device.name,
+            lower: 0,
+            upper: 100,
+          });
           return {
             name: device.name,
             status: device.last_value,
@@ -54,6 +61,7 @@ const SensorsProvider = ({ children }) => {
             topic: `${config.userName}/feeds/${device.key}`,
           };
         });
+        setLimit(res);
         console.log(data);
         return data;
       })

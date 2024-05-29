@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import Constants from "expo-constants";
+import axios from "axios";
 
 const SettingsContext = createContext();
 
