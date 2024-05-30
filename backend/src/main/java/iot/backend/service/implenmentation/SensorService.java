@@ -11,8 +11,8 @@ public class SensorService {
     @Autowired
     private SensorRepo sensorRepo;
 
-    public Sensor getConfig(Long id) throws Exception{
-        return sensorRepo.findById(id).get();
+    public Sensor getConfig(String key) throws Exception{
+        return sensorRepo.findByKey(key);
     }
 
     public Sensor updateConfig(Sensor sensor) throws Exception{

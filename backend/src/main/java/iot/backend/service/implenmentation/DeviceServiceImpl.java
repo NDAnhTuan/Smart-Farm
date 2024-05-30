@@ -17,19 +17,19 @@ public class DeviceServiceImpl implements DeviceService{
     @Autowired
     private NonSensorService nonSensorService;
 
-    @Autowired
-    private DeviceRepo deviceRepo;
+    // @Autowired
+    // private DeviceRepo deviceRepo;
+
+    // @Override
+    // public Device addDevice(Device device) throws Exception {
+    //    if (deviceRepo.findById(device.getId()) == null) {
+    //         return deviceRepo.save(device);
+    //    }
+    //    else throw new Exception("is Available");
+    // }
 
     @Override
-    public Device addDevice(Device device) throws Exception {
-       if (deviceRepo.findById(device.getId()) == null) {
-            return deviceRepo.save(device);
-       }
-       else throw new Exception("is Available");
-    }
-
-    @Override
-    public Sensor getSensorConfig(Long id) throws Exception {
+    public Sensor getSensorConfig(String id) throws Exception {
         return sensorService.getConfig(id);
     }
 
