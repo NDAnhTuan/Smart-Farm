@@ -1,5 +1,7 @@
 package iot.backend.service.inter;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import iot.backend.entity.Device;
@@ -13,5 +15,6 @@ public interface DeviceService {
     public Sensor updateSensorConfig(Sensor sensor) throws Exception;
     public NonSensor getNonSensorStatus(Long id) throws Exception;
     public NonSensor updateNonSensorStatus(NonSensor nonSensor) throws Exception;
+    public List<Sensor> getAllSensorConfig();
 
 }

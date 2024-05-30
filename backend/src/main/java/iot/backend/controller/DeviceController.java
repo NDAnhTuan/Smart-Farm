@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -29,17 +31,26 @@ public class DeviceController {
     //     }
     // }
     
-
-    @GetMapping("api/device/sensor/{key}")
-    public ResponseEntity<?> getSensorConfig(@PathVariable String key) {
+    @GetMapping("api/device/sensor")
+    public ResponseEntity<?> getAllSensorConfig() {
         try {
-            return ResponseEntity.ok(deviceService.getSensorConfig(key)); 
+            return ResponseEntity.ok(deviceService.getAllSensorConfig()); 
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+
+    @GetMapping("api/device/sensor/{id}")
+    public ResponseEntity<?> getSensorConfig(@PathVariable String id) {
+        try {
+            return ResponseEntity.ok(deviceService.getSensorConfig(id)); 
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @PatchMapping("api/device/sensor")
+    @PatchMapping("api/device/sensor/{id}")
     public ResponseEntity<?> updateSensorConfig(@RequestBody Sensor sensor){
         try {
             return ResponseEntity.ok(deviceService.updateSensorConfig(sensor));

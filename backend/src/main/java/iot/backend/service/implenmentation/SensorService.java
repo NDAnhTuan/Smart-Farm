@@ -1,5 +1,7 @@
 package iot.backend.service.implenmentation;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +19,9 @@ public class SensorService {
 
     public Sensor updateConfig(Sensor sensor) throws Exception{
         return sensorRepo.save(sensor);
+    }
+
+    public List<Sensor> getAll() {
+        return sensorRepo.findAll();
     }
 }

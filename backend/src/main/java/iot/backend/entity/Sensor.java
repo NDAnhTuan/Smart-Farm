@@ -38,8 +38,6 @@ public class Sensor {
     //     this.id = id;
     // }
 
-    
-
     public Device getDevice() {
         return device;
     }
@@ -78,22 +76,6 @@ public class Sensor {
 
     public void setLowerAlert(Double lowerAlert) {
         this.lowerAlert = lowerAlert;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getKey_sensor() {
-        return key_sensor;
-    }
-
-    public void setKey_sensor(String key_sensor) {
-        this.key_sensor = key_sensor;
     }
 
     

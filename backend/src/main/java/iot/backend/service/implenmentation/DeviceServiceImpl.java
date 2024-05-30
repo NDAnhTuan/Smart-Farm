@@ -1,5 +1,7 @@
 package iot.backend.service.implenmentation;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,11 @@ public class DeviceServiceImpl implements DeviceService{
     @Override
     public NonSensor updateNonSensorStatus(NonSensor nonSensor) throws Exception {
         return nonSensorService.updateStatus(nonSensor);
+    }
+
+    @Override
+    public List<Sensor> getAllSensorConfig() {
+        return sensorService.getAll();
     }
 
     
