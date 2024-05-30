@@ -78,5 +78,21 @@ public class Sensor {
         this.lowerAlert = lowerAlert;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getKey_sensor() {
+        return key_sensor;
+    }
+
+    public void setKey_sensor(String key_sensor) {
+        this.key_sensor = key_sensor;
+    }
+
     
 }

@@ -18,7 +18,14 @@ public class SensorService {
     }
 
     public Sensor updateConfig(Sensor sensor) throws Exception{
-        return sensorRepo.save(sensor);
+        Sensor findSensor = sensorRepo.findByKey(sensor.getKey_sensor());
+        if (sensor.getLowerAlert() != null){
+            findSensor.setLowerAlert(sensor.getLowerAlert());
+        }
+        if (sensor.getUpperAlert() != null){
+            findSensor.setUpperAlert(sensor.getUpperAlert());
+        }
+        return sensorRepo.save(findSensor);
     }
 
     public List<Sensor> getAll() {
