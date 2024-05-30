@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { SettingsContext } from "@context/SettingsContext";
 import { SensorsContext } from "@context/SensorsContext";
+import axios from "axios";
 
 const Setting = () => {
   const { limit, setLimit } = useContext(SettingsContext);
@@ -21,7 +22,6 @@ const Setting = () => {
   // }, []);
 
   console.log(limit);
-
   return (
     <View style={styles.container}>
       {limit.length > 0 ? (
@@ -31,37 +31,88 @@ const Setting = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                keyboardType="numeric"
                 placeholder="Giới hạn dưới"
                 value={"" + device.lower}
-                onChangeText={(value) =>
+                onChangeText={(value) => {
+                  if (value == "") {
+                    value = 0;
+                  }
+                  let newValue = parseFloat(value);
+                  limit.forEach((item) => {
+                    if (item.key == device.key && newValue > item.upper) {
+                      newValue = item.upper;
+                    }
+                  });
+
                   setLimit((prev) => {
                     const data = prev.map((item) => {
                       if (item.key == device.key) {
-                        item.lower = Number(value);
+                        item.lower = Number(newValue);
                       }
                       return item;
                     });
                     return data;
-                  })
-                }
+                  });
+                }}
+                onBlur={() => {
+                  let lower = 0;
+                  limit.some((item) => {
+                    if (item.key == device.key) {
+                      lower = item.lower;
+                      return true;
+                    }
+                  });
+
+                  axios
+                    .patch("http://localhost:8080/api/device/sensor", {
+                      key_sensor: device.key,
+                      lowerAlert: lower,
+                    })
+                    .then((res) => console.log(res.data))
+                    .catch((err) => console.error(err));
+                }}
               />
               <TextInput
                 style={styles.input}
-                keyboardType="numeric"
                 placeholder="Giới hạn trên"
                 value={"" + device.upper}
-                onChangeText={(value) =>
+                onChangeText={(value) => {
+                  if (value == "") {
+                    value = 0;
+                  }
+                  let newValue = parseFloat(value);
+                  limit.forEach((item) => {
+                    if (item.key == device.key && newValue < item.lower) {
+                      newValue = item.lower;
+                    }
+                  });
+
                   setLimit((prev) => {
                     const data = prev.map((item) => {
                       if (item.key == device.key) {
-                        item.upper = Number(value);
+                        item.upper = Number(newValue);
                       }
                       return item;
                     });
                     return data;
-                  })
-                }
+                  });
+                }}
+                onBlur={() => {
+                  let upper = 0;
+                  limit.some((item) => {
+                    if (item.key == device.key) {
+                      upper = item.upper;
+                      return true;
+                    }
+                  });
+
+                  axios
+                    .patch("http://localhost:8080/api/device/sensor", {
+                      key_sensor: device.key,
+                      upperAlert: upper,
+                    })
+                    .catch((err) => console.error(err));
+                }}
               />
             </View>
           </View>

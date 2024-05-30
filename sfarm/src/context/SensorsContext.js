@@ -36,7 +36,6 @@ const SensorsProvider = ({ children }) => {
   const notificationData = useContext(NotificationContext);
   const { pushNotification } = notificationData;
   const { limit, setLimit, overLimit } = useContext(SettingsContext);
-  console.log("limit in sensot context 1", limit);
 
   const limitRef = useRef(limit);
   limitRef.current = limit;
@@ -46,14 +45,17 @@ const SensorsProvider = ({ children }) => {
     fetch(`https://io.adafruit.com/api/v2/tdttvd/groups/sensors/feeds`)
       .then((response) => response.json())
       .then((json) => {
-        let res = [];
         data = json.map((device) => {
-          res.push({
-            key: device.key,
-            name: device.name,
-            lower: 0,
-            upper: 100,
+          setLimit((prev) => {
+            let data = prev.map((item) => {
+              if (item.key == device.key) {
+                item.name = device.name;
+              }
+              return item;
+            });
+            return data;
           });
+
           return {
             name: device.name,
             status: device.last_value,
@@ -61,7 +63,6 @@ const SensorsProvider = ({ children }) => {
             topic: `${config.userName}/feeds/${device.key}`,
           };
         });
-        setLimit(res);
         console.log(data);
         return data;
       })
@@ -107,22 +108,22 @@ const SensorsProvider = ({ children }) => {
           if (topic.includes("temp") && overLimit(value, sensor)) {
             pushNotification({
               title: "Cảnh báo!",
-              body: `Nhiệt độ vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
+              body: `Nhiệt độ vượt ngưỡng ở thiết bị ${device.name}.\n Giá trị: ${value}`,
             });
           } else if (topic.includes("humid") && overLimit(value, sensor)) {
             pushNotification({
               title: "Cảnh báo!",
-              body: `Độ ẩm vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
+              body: `Độ ẩm vượt ngưỡng ở thiết bị ${device.name}.\n Giá trị: ${value}`,
             });
           } else if (topic.includes("bright") && overLimit(value, sensor)) {
             pushNotification({
               title: "Cảnh báo!",
-              body: `Ánh sáng vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
+              body: `Ánh sáng vượt ngưỡng ở thiết bị ${device.name}.\n Giá trị: ${value}`,
             });
           } else if (topic.includes("soil") && overLimit(value, sensor)) {
             pushNotification({
               title: "Cảnh báo!",
-              body: `Độ ẩm đất vượt ngưỡng ở thiết bị ${device.name}. Giá trị: ${value}`,
+              body: `Độ ẩm đất vượt ngưỡng ở thiết bị ${device.name}.\n Giá trị: ${value}`,
             });
           }
         }

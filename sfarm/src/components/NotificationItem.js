@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Button } from "react-native";
 
-const NotificationItem = ({ id, title, body, status }) => {
+const NotificationItem = ({ id, title, body, time }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
