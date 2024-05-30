@@ -46,7 +46,7 @@ public class DeviceController {
         }
     }
 
-    @PatchMapping("api/device/sensor/{id}")
+    @PatchMapping("api/device/sensor")
     public ResponseEntity<?> updateSensorConfig(@RequestBody Sensor sensor){
         try {
             return ResponseEntity.ok(deviceService.updateSensorConfig(sensor));
